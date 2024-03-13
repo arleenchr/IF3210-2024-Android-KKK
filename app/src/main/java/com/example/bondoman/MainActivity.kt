@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.bondoman.databinding.ActivityMainBinding
-import com.example.bondoman.ui.navbar.HomeFragment
-import com.example.bondoman.ui.navbar.SettingsFragment
-import com.example.bondoman.ui.navbar.TransactionFragment
+import com.example.bondoman.ui.home.HomeFragment
+import com.example.bondoman.ui.pie_chart.PieChartFragment
+import com.example.bondoman.ui.scan.ScanFragment
+import com.example.bondoman.ui.settings.SettingsFragment
+import com.example.bondoman.ui.transaction.TransactionFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -27,6 +29,14 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.transaction -> {
                     loadFragment(TransactionFragment())
+                    true
+                }
+                R.id.scan -> {
+                    loadFragment(ScanFragment())
+                    true
+                }
+                R.id.pie_chart -> {
+                    loadFragment(PieChartFragment())
                     true
                 }
                 R.id.settings -> {

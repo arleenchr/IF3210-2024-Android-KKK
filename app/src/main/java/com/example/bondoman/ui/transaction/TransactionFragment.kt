@@ -1,4 +1,4 @@
-package com.example.bondoman.ui.navbar
+package com.example.bondoman.ui.transaction
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
