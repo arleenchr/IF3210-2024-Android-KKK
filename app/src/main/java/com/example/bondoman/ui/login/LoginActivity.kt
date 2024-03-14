@@ -1,6 +1,7 @@
 package com.example.bondoman.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
+import com.example.bondoman.MainActivity
 import com.example.bondoman.databinding.ActivityLoginBinding
 
 import com.example.bondoman.R
@@ -26,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.hide()
 
         val username = binding.username
         val password = binding.password
@@ -52,7 +55,9 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
-            loading.visibility = View.GONE
+            if (loading != null) {
+                loading.visibility = View.GONE
+            }
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
             }
@@ -60,6 +65,9 @@ class LoginActivity : AppCompatActivity() {
                 updateUiWithUser(loginResult.success)
             }
             setResult(Activity.RESULT_OK)
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
 
             //Complete and destroy login activity once successful
             finish()
@@ -92,7 +100,9 @@ class LoginActivity : AppCompatActivity() {
             }
 
             login.setOnClickListener {
-                loading.visibility = View.VISIBLE
+                if (loading != null) {
+                    loading.visibility = View.VISIBLE
+                }
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
         }
