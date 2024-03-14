@@ -3,18 +3,19 @@ package com.example.bondoman
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.widget.Button
 
-class SplashActivity : AppCompatActivity() {
+class IntroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash_screen)
+        setContentView(R.layout.activity_intro)
         supportActionBar?.hide()
-        Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, IntroActivity::class.java)
+        val startButton: Button = findViewById(R.id.start_button)
+
+        startButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }, 3000)
+        }
     }
 }
