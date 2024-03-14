@@ -1,27 +1,49 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/gray_800"
     tools:context=".MainActivity">
 
     <FrameLayout
-        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:id="@+id/container"/>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#313131"
-        android:paddingHorizontal="0dp"
-        android:paddingVertical="8dp"
-        app:menu="@menu/nav_menu"
-        app:itemIconTint="@color/bottom_nav_icon_color_selector"
-        app:itemTextColor="@color/bottom_nav_icon_color_selector"
-        />
+        android:layout_gravity="bottom"
+        app:backgroundTint="@color/foreground"
+        app:fabAlignmentMode="center"
+        app:fabCradleMargin="12dp"
+        app:fabCradleRoundedCornerRadius="50dp" />
 
-</LinearLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottomNav"
+            android:layout_gravity="bottom"
+            app:labelVisibilityMode="unlabeled"
+            android:background="@color/transparent"
+            app:menu="@menu/nav_menu"
+            app:itemIconTint="@color/bottom_nav_icon_color_selector"
+            app:itemTextColor="@color/bottom_nav_icon_color_selector"
+            />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/green_500"
+        android:src="@drawable/baseline_scan_28"
+        android:id="@+id/fab"
+        app:layout_anchor="@id/bottomAppBar"
+        app:tint ="@color/white"
+        android:contentDescription="@string/scan_qr" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -2,22 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/home"
-        android:icon="@drawable/baseline_home_24"
+        android:icon="@drawable/baseline_home_28"
         android:title="Home"  />
     <item
         android:id="@+id/transaction"
-        android:icon="@drawable/baseline_assignment_24"
+        android:icon="@drawable/baseline_transaction_28"
         android:title="Transaction" />
     <item
         android:id="@+id/scan"
-        android:icon="@drawable/baseline_add_a_photo_24"
         android:title="Scan" />
     <item
         android:id="@+id/pie_chart"
-        android:icon="@drawable/baseline_pie_chart_24"
+        android:icon="@drawable/baseline_analytics_28"
         android:title="Pie Chart" />
     <item
         android:id="@+id/settings"
-        android:icon="@drawable/baseline_app_settings_alt_24"
+        android:icon="@drawable/baseline_settings_28"
         android:title="Settings" />
 </menu>
