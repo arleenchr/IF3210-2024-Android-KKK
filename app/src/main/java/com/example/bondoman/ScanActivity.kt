@@ -38,7 +38,6 @@ class ScanActivity : AppCompatActivity() {
             if (success) {
                 setupViewAfterPhotoTaken()
             } else {
-                Toast.makeText(this, "Failed to capture image", Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
