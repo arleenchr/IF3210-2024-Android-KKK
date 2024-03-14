@@ -43,7 +43,7 @@
             android:layout_below="@id/intro_title"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/urbanist_medium"
-            android:text="Sign in"
+            android:text="Sign in to Bondoman"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -58,6 +58,7 @@
             android:drawablePadding="16dp"
             android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
+            android:fontFamily="@font/urbanist"
             android:selectAllOnFocus="true"
             app:backgroundTint="@color/gray_500"
             app:layout_constraintEnd_toEndOf="parent"
@@ -74,6 +75,7 @@
             android:drawableStart="@drawable/filock"
             android:drawablePadding="16dp"
             android:hint="@string/prompt_password"
+            android:fontFamily="@font/urbanist"
             android:imeActionLabel="@string/action_sign_in_short"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
@@ -92,6 +94,7 @@
             android:backgroundTint="@color/green_700"
             android:enabled="false"
             android:padding="10dp"
+            android:fontFamily="@font/urbanist"
             android:text="Continue"
             android:textAllCaps="false"
             android:textColor="@color/white"
