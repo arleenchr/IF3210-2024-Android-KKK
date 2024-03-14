@@ -13,6 +13,7 @@ import com.example.bondoman.ui.settings.SettingsFragment
 import com.example.bondoman.ui.transaction.TransactionFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import android.content.Intent
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.scan -> {
-                    loadFragment(ScanFragment())
+                    startActivity(Intent(this, ScanActivity::class.java))
                     true
                 }
                 R.id.pie_chart -> {
@@ -59,7 +60,8 @@ class MainActivity : AppCompatActivity() {
 
         // Set OnClickListener for the FloatingActionButton
         fab.setOnClickListener {
-            loadFragment(ScanFragment())
+            val intent = Intent(this, ScanActivity::class.java)
+            startActivity(intent)
         }
 
         // Load the initial fragment
