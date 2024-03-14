@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/intro_image"
-        android:layout_width="1740.54dp"
-        android:layout_height="740dp"
+        android:layout_width="1280dp"
+        android:layout_height="580dp"
         android:gravity="center"
         android:src="@drawable/line_intro_full"
         android:paddingTop="80dp"
