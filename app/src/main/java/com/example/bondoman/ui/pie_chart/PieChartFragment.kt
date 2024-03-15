@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
@@ -87,6 +88,12 @@ class PieChartFragment() : Fragment(), OnChartValueSelectedListener {
         // Disable legend
         val l: Legend = chart!!.legend
         l.isEnabled = false
+
+        // Set the font
+        val tf = context?.let { context ->
+            ResourcesCompat.getFont(context, R.font.urbanist_regular)
+        }
+        chart?.setEntryLabelTypeface(tf)
     }
 
     override fun onValueSelected(e: Entry, h: Highlight) {
