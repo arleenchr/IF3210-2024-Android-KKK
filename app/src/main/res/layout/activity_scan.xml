@@ -18,8 +18,9 @@
         android:id="@+id/buttonTakePhoto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/primary_button"
         android:fontFamily="@font/urbanist_medium"
+        android:background="@drawable/primary_button"
+        android:backgroundTint="#00000000"
         android:text="Retake"/>
 
     <Button
@@ -29,5 +30,6 @@
         android:layout_marginTop="12dp"
         android:fontFamily="@font/urbanist_medium"
         android:background="@drawable/primary_button"
+        android:backgroundTint="#FF14532D"
         android:text="Confirm"/>
 </LinearLayout>
