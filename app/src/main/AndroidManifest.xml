@@ -35,6 +35,7 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/title_activity_login" />
         <activity
             android:theme="@style/Theme.Bondoman.Main"
