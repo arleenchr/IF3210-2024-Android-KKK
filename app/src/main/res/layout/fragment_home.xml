@@ -22,9 +22,11 @@
 
         <ImageView
             android:id="@+id/logo_home"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_vertical"
             android:paddingTop="8dp"
+            android:layout_marginEnd="8dp"
             android:src="@drawable/logo_small" />
 
         <LinearLayout
@@ -38,15 +40,17 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/urbanist_regular"
                 android:text="Welcome back,"
+                android:layout_marginBottom="2dp"
                 android:textColor="@color/gray_100"
-                android:textSize="12sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/urbanist_regular"
+                android:fontFamily="@font/urbanist_medium"
                 android:text="Michael Jonathan Halim"
+                android:textSize="20sp"
                 android:textColor="@color/gray_100" />
         </LinearLayout>
 
@@ -56,7 +60,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/roundcard"
         android:elevation="4dp"
         android:orientation="vertical"
@@ -154,7 +158,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="418dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="24dp"
         android:background="@drawable/card"
