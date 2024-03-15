@@ -3,7 +3,7 @@ package com.example.bondoman.ui.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.bondoman.data.LoginDataSource
-import com.example.bondoman.data.LoginRepository
+import com.example.bondoman.repository.LoginRepository
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

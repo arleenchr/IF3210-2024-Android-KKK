@@ -1,13 +1,16 @@
 package com.example.bondoman.ui.login
 
+import android.content.Context
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
-import com.example.bondoman.data.LoginRepository
-import com.example.bondoman.data.Result
-
+import androidx.lifecycle.viewModelScope
 import com.example.bondoman.R
+import com.example.bondoman.data.Result
+import com.example.bondoman.repository.LoginRepository
+import kotlinx.coroutines.launch
+
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
@@ -18,15 +21,23 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     val loginResult: LiveData<LoginResult> = _loginResult
 
     fun login(username: String, password: String) {
-        // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
+        viewModelScope.launch {
+            val result = loginRepository.login(username, password)
 
-        if (result is Result.Success) {
-            _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
+            if (result is Result.Success) {
+                _loginResult.value = LoginResult(success = LoggedInUserView(displayName = result.data))
+            } else if (result is Result.Error) {
+                val errorMessage = result.exception.message ?: "Unknown error"
+                _loginResult.value = LoginResult(error = R.string.login_failed)
+            }
         }
+    }
+
+    private fun saveToken(token: String, context: Context) {
+        val sharedPreferences = context.getSharedPreferences("identity", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("token", token)
+        editor.apply()
     }
 
     fun loginDataChanged(username: String, password: String) {

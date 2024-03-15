@@ -5,13 +5,13 @@ plugins {
 
 android {
     namespace = "com.example.bondoman"
-    compileSdk = 32
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.bondoman"
         minSdk = 29
         //noinspection ExpiredTargetSdkVersion
-        targetSdk = 32
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
