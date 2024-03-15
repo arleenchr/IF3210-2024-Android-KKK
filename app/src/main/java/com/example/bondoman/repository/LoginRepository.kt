@@ -23,7 +23,7 @@ class LoginRepository(val dataSource: LoginDataSource) {
         user = null
     }
 
-    fun logout() {
+    suspend fun logout() {
         user = null
         dataSource.logout()
     }
