@@ -92,7 +92,7 @@
                     android:id="@+id/income_home_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/urbanist_regular"
+                    android:fontFamily="@font/urbanist_medium"
                     android:text="This month's income"
                     android:textAlignment="textEnd"
                     android:textColor="@color/gray_100"
@@ -105,7 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:fontFamily="@font/urbanist_medium"
+                android:fontFamily="@font/urbanist_semibold"
                 android:text="Rp1.000.000"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
@@ -134,7 +134,7 @@
                     android:id="@+id/expense_home_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/urbanist_regular"
+                    android:fontFamily="@font/urbanist_medium"
                     android:text="This month's expense"
                     android:textAlignment="textEnd"
                     android:textColor="@color/gray_100"
@@ -147,7 +147,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:fontFamily="@font/urbanist_medium"
+                android:fontFamily="@font/urbanist_semibold"
                 android:text="Rp100.000"
                 android:textAlignment="textEnd"
                 android:textColor="@color/white"
@@ -209,6 +209,7 @@
                 android:fontFamily="@font/urbanist_medium"
                 android:textSize="12sp"
                 android:textAllCaps="false"
+                android:backgroundTint="#FF213524"
                 android:text="See all"
                 />
 
