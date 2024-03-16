@@ -1,10 +1,12 @@
 package com.example.bondoman.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.example.bondoman.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -35,7 +37,19 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        // Retrieve text from SharedPreferences
+        val sharedPreferences = requireContext().getSharedPreferences("identity", Context.MODE_PRIVATE)
+        val username = sharedPreferences.getString("username", "")
+
+        // Find the TextView
+        val textView: TextView = view.findViewById(R.id.textView12)
+
+        // Set text to the TextView
+        textView.text = username
+
+        return view
     }
 
     companion object {

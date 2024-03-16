@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/urbanist_medium"
-                android:text="Michael Jonathan Halim"
+                android:text="Guest"
                 android:textSize="20sp"
                 android:textColor="@color/gray_100" />
         </LinearLayout>

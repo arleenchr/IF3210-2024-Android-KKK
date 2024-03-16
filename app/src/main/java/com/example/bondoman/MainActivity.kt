@@ -1,19 +1,18 @@
 package com.example.bondoman
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.bondoman.databinding.ActivityMainBinding
 import com.example.bondoman.ui.home.HomeFragment
 import com.example.bondoman.ui.pie_chart.PieChartFragment
-import com.example.bondoman.ui.scan.ScanFragment
 import com.example.bondoman.ui.settings.SettingsFragment
 import com.example.bondoman.ui.transaction.TransactionFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.content.Intent
+import com.example.bondoman.service.TokenCheckService
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +23,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val serviceIntent = Intent(this, TokenCheckService::class.java)
+        startService(serviceIntent)
 
         val actionBar: ActionBar? = supportActionBar
         actionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM

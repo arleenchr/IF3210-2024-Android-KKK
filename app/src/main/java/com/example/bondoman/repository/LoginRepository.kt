@@ -1,5 +1,6 @@
 package com.example.bondoman.repository
 
+import android.content.Context
 import com.example.bondoman.data.LoginDataSource
 import com.example.bondoman.data.Result
 
@@ -8,7 +9,7 @@ import com.example.bondoman.data.Result
  * maintains an in-memory cache of login status and user credentials information.
  */
 
-class LoginRepository(val dataSource: LoginDataSource) {
+class LoginRepository(val dataSource: LoginDataSource, private val context: Context) {
 
     // in-memory cache of the loggedInUser object
     var user: String? = null
@@ -25,7 +26,7 @@ class LoginRepository(val dataSource: LoginDataSource) {
 
     suspend fun logout() {
         user = null
-        dataSource.logout()
+        dataSource.logout(context)
     }
 
     suspend fun login(username: String, password: String): Result<String> {
