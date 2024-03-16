@@ -1,6 +1,10 @@
 package com.example.bondoman.data
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import com.example.bondoman.service.ApiClient
+import com.example.bondoman.ui.login.LoginActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
@@ -45,7 +49,21 @@ class LoginDataSource {
 
 
 
-    suspend fun logout() {
-        // TODO: revoke authentication
+    fun logout(context: Context) {
+        println("LOGOUT BRO")
+        // Create an Intent to start the LoginActivity
+        val intent = Intent(context, LoginActivity::class.java)
+
+        // Add flags to clear the activity stack and start LoginActivity as a new task
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+        // Start LoginActivity
+        context.startActivity(intent)
+
+        // Finish the current activity
+        if (context is Activity) {
+            context.finish()
+        }
     }
+
 }

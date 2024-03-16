@@ -1,30 +1,25 @@
 package com.example.bondoman.service
 
-import android.content.Context
-import android.content.SharedPreferences
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.OkHttpClient
 import okhttp3.Interceptor
+import android.content.SharedPreferences
+import android.content.Context
 
 object RetrofitClient {
     private const val BASE_URL = "https://pbd-backend-2024.vercel.app"
+    lateinit var sharedPreferences: SharedPreferences
 
-    private lateinit var sharedPreferences: SharedPreferences
-
-    fun initialize(context: Context) {
-        sharedPreferences = context.getSharedPreferences("identity", Context.MODE_PRIVATE)
-    }
-
-//    private val httpClient = OkHttpClient.Builder().apply {
-//        addInterceptor(BearerTokenInterceptor())
-//    }.build()
+    private val httpClient = OkHttpClient.Builder().apply {
+        addInterceptor(BearerTokenInterceptor())
+    }.build()
 
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-//            .client(httpClient)
+            .client(httpClient)
             .build()
     }
 
@@ -36,11 +31,10 @@ object RetrofitClient {
                 .build()
             return chain.proceed(request)
         }
-    }
 
-    // Function to get token from SharedPreferences
-    private fun getToken(): String {
-        return sharedPreferences.getString("token", "") ?: ""
+        private fun getToken(): String {
+            return sharedPreferences.getString("token", "").toString()
+        }
     }
 }
 

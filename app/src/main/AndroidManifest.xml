@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Bondoman"
         tools:targetApi="31">
+        <service android:name=".service.TokenCheckService" />
         <activity android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>

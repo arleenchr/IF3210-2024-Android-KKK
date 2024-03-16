@@ -1,6 +1,8 @@
 package com.example.bondoman.ui.login
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.bondoman.R
 import com.example.bondoman.data.Result
 import com.example.bondoman.repository.LoginRepository
+import com.example.bondoman.service.RetrofitClient.sharedPreferences
 import kotlinx.coroutines.launch
 
 
@@ -20,24 +23,22 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
+    @SuppressLint("CommitPrefEdits")
     fun login(username: String, password: String) {
         viewModelScope.launch {
             val result = loginRepository.login(username, password)
 
             if (result is Result.Success) {
-                _loginResult.value = LoginResult(success = LoggedInUserView(displayName = result.data))
+                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                editor.putString("username", username)
+                editor.putString("token", result.data)
+                editor.apply()
+                _loginResult.value = LoginResult(success = LoggedInUserView(displayName = username))
             } else if (result is Result.Error) {
                 val errorMessage = result.exception.message ?: "Unknown error"
                 _loginResult.value = LoginResult(error = R.string.login_failed)
             }
         }
-    }
-
-    private fun saveToken(token: String, context: Context) {
-        val sharedPreferences = context.getSharedPreferences("identity", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("token", token)
-        editor.apply()
     }
 
     fun loginDataChanged(username: String, password: String) {

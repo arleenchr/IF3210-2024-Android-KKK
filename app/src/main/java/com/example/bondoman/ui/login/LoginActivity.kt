@@ -22,7 +22,6 @@ import com.example.bondoman.MainActivity
 import com.example.bondoman.databinding.ActivityLoginBinding
 
 import com.example.bondoman.R
-import com.example.bondoman.service.RetrofitClient
 
 class LoginActivity : AppCompatActivity() {
 
@@ -41,6 +40,9 @@ class LoginActivity : AppCompatActivity() {
         val password = binding.password
         val login = binding.login
         val loading = binding.loading
+
+
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory(applicationContext)).get(LoginViewModel::class.java)
 
         var eyeDrawable = ContextCompat.getDrawable(this, R.drawable.fieye)
         eyeDrawable?.setBounds(0, 0, eyeDrawable.intrinsicWidth, eyeDrawable.intrinsicHeight)
@@ -68,9 +70,6 @@ class LoginActivity : AppCompatActivity() {
             }
             false
         }
-
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
