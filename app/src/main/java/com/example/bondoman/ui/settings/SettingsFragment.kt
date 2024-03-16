@@ -18,9 +18,9 @@ class SettingsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
         // Replace the fragment container with PreferenceFragmentCompat
-        childFragmentManager.beginTransaction()
-            .replace(R.id.preference_container, SettingsPreferenceFragment())
-            .commit()
+//        childFragmentManager.beginTransaction()
+//            .replace(R.id.preference_container, SettingsPreferenceFragment())
+//            .commit()
 
         return view
     }
