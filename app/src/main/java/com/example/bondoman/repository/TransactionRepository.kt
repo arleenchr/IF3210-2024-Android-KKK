@@ -18,7 +18,7 @@ class TransactionRepository (private val database: TransactionDatabase) {
         database.transactionDAO.deleteTransaction(transaction)
     }
 
-    suspend fun deleteAllTransaction() {
-        database.transactionDAO.deleteAllTransaction()
-    }
+//    suspend fun deleteAllTransaction() {
+//        database.transactionDAO.deleteAllTransaction()
+//    }
 }
