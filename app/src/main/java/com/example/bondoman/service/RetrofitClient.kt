@@ -16,15 +16,15 @@ object RetrofitClient {
         sharedPreferences = context.getSharedPreferences("identity", Context.MODE_PRIVATE)
     }
 
-    private val httpClient = OkHttpClient.Builder().apply {
-        addInterceptor(BearerTokenInterceptor())
-    }.build()
+//    private val httpClient = OkHttpClient.Builder().apply {
+//        addInterceptor(BearerTokenInterceptor())
+//    }.build()
 
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(httpClient)
+//            .client(httpClient)
             .build()
     }
 

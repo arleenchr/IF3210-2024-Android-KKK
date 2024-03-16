@@ -35,8 +35,7 @@ class LoginDataSource {
                     Result.Error(Exception("Empty response body"))
                 }
             } else {
-                val errorBody = response.errorBody()?.string() ?: "Unknown error"
-                Result.Error(Exception("Login failed: $errorBody"))
+                Result.Error(Exception("Login failed"))
             }
         } catch (e: Exception) {
             e.printStackTrace()

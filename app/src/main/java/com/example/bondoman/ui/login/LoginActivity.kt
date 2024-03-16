@@ -17,6 +17,7 @@ import com.example.bondoman.MainActivity
 import com.example.bondoman.databinding.ActivityLoginBinding
 
 import com.example.bondoman.R
+import com.example.bondoman.service.RetrofitClient
 
 class LoginActivity : AppCompatActivity() {
 
@@ -58,19 +59,21 @@ class LoginActivity : AppCompatActivity() {
             if (loading != null) {
                 loading.visibility = View.GONE
             }
+
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
             }
+
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
+                setResult(Activity.RESULT_OK)
+
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+
+                //Complete and destroy login activity once successful
+                finish()
             }
-            setResult(Activity.RESULT_OK)
-
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-
-            //Complete and destroy login activity once successful
-            finish()
         })
 
         username.afterTextChanged {
