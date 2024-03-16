@@ -1,5 +1,6 @@
 package com.example.bondoman.ui.login
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import androidx.lifecycle.Observer
@@ -9,10 +10,14 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.bondoman.MainActivity
 import com.example.bondoman.databinding.ActivityLoginBinding
 
@@ -23,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,8 +41,35 @@ class LoginActivity : AppCompatActivity() {
         val login = binding.login
         val loading = binding.loading
 
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory(applicationContext))
-            .get(LoginViewModel::class.java)
+
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory(applicationContext)).get(LoginViewModel::class.java)
+
+        var eyeDrawable = ContextCompat.getDrawable(this, R.drawable.fieye)
+        eyeDrawable?.setBounds(0, 0, eyeDrawable.intrinsicWidth, eyeDrawable.intrinsicHeight)
+
+        // Set the onTouchListener to the password EditText to handle show/hide password
+        password.setOnTouchListener { v, event ->
+            val DRAWABLE_RIGHT = 2
+
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (event.rawX >= (password.right - password.compoundDrawables[DRAWABLE_RIGHT].bounds.width())) {
+                    // Toggle password visibility
+                    if (password.transformationMethod == PasswordTransformationMethod.getInstance()) {
+                        // Show password
+                        password.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                        eyeDrawable = ContextCompat.getDrawable(this, R.drawable.fieyeoff)
+                        password.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.filock,0,R.drawable.fieyeoff,0)
+                    } else {
+                        // Hide password
+                        password.transformationMethod = PasswordTransformationMethod.getInstance()
+                        eyeDrawable = ContextCompat.getDrawable(this, R.drawable.fieye)
+                        password.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.filock,0,R.drawable.fieye,0)
+                    }
+                    return@setOnTouchListener true
+                }
+            }
+            false
+        }
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
