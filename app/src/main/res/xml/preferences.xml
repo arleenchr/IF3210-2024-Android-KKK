@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory
-        android:title="Transactions">
+        android:title="Transactions"
+        style="@styles/SettingsCategoryStyle">
         <Preference
             android:key="save_transaction_list"
             android:title="Save transaction list" />
@@ -14,6 +16,7 @@
         android:title="Account">
         <Preference
             android:key="logout"
-            android:title="Logout" />
+            android:title="Logout"
+            style="@styles/SettingsLogoutStyle" />
     </PreferenceCategory>
 </PreferenceScreen>

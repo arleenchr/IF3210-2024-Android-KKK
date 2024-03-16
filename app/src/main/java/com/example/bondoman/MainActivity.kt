@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.settings -> {
+                    setTheme(R.style.SettingsStyle)
                     loadFragment(SettingsFragment())
                     true
                 }

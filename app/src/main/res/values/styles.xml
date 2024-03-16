@@ -10,8 +10,16 @@
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
     </style>
-    <style name="PreferencesTheme" parent="Theme.AppCompat">
+    <style name="SettingsStyle">
         <item name="android:textColor">@color/gray_100</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+    <style name="SettingsCategoryStyle">
+        <item name="android:textColor">@color/gray_500</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+    <style name="SettingsLogoutStyle">
+        <item name="android:textColor">@color/red_500</item>
         <item name="android:windowBackground">@color/transparent</item>
     </style>
 </resources>
