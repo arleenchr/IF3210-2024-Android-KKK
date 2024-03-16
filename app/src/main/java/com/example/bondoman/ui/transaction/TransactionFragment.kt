@@ -1,11 +1,18 @@
 package com.example.bondoman.ui.transaction
 
+import android.location.Location
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.R
+import com.example.bondoman.models.Transaction
+import com.example.bondoman.ui.adapters.TransactionAdapter
+import com.example.bondoman.utils.VerticalSpaceItemDecoration
+import java.sql.Timestamp
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,8 +41,32 @@ class TransactionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_transaction, container, false)
+
+        // Create a list of transactions
+        // TODO: Replace with actual data from the database
+        val transactions = listOf(
+            Transaction("Groceries", 100000, "Food", Location("Walmart"), Timestamp(System.currentTimeMillis())),
+            Transaction("Gas", 5000, "Transportation", Location("Shell"), Timestamp(System.currentTimeMillis())),
+            Transaction("Coffee", 500, "Food", Location("Starbucks"), Timestamp(System.currentTimeMillis())),
+            Transaction("Lunch", 1500, "Food", Location("Chipotle"), Timestamp(System.currentTimeMillis())),
+            Transaction("Dinner", 3000, "Food", Location("Chick-fil-A"), Timestamp(System.currentTimeMillis())),
+            Transaction("Uber", 2000, "Transportation", Location("Uber"), Timestamp(System.currentTimeMillis())),
+            Transaction("Lyft", 2500, "Transportation", Location("Lyft"), Timestamp(System.currentTimeMillis()))
+        )
+
+        val view = inflater.inflate(R.layout.fragment_transaction, container, false)
+
+        val recyclerView: RecyclerView = view.findViewById(R.id.transaction_recycler_view)
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = TransactionAdapter(transactions)
+
+            // Add item decoration for spacing
+            val verticalSpacing = resources.getDimensionPixelSize(R.dimen.item_vertical_spacing)
+            addItemDecoration(VerticalSpaceItemDecoration(verticalSpacing))
+        }
+
+        return view
     }
 
     companion object {

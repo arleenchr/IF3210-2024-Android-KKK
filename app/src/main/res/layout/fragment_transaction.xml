@@ -1,16 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray_800"
-    tools:context=".ui.transaction.TransactionFragment">
+    android:padding="20dp"
+    tools:context=".ui.transaction.TransactionFragment" >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/white"
-        android:text="Transactions Page" />
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/urbanist_semibold"
+            android:textColor="@color/gray_100"
+            android:textSize="12sp"
+            android:text="Today" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/transaction_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            tools:listitem="@layout/item_transaction" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

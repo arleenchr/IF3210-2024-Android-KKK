@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/foreground"
+    android:background="@drawable/roundstyle_sm"
+    android:backgroundTint="@color/foreground"
     android:orientation="horizontal"
     android:paddingVertical="16dp"
     android:paddingHorizontal="12dp"
@@ -22,6 +23,7 @@
             android:layout_height="32dp"
             android:src="@drawable/ic_expense_item"
             android:layout_marginEnd="12dp"
+            android:id="@+id/transaction_icon"
             />
 
         <LinearLayout
@@ -31,6 +33,7 @@
             >
 
             <TextView
+                android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Groceries"
@@ -40,6 +43,7 @@
                 />
 
             <TextView
+                android:id="@+id/tvCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Expense"
@@ -68,6 +72,7 @@
         >
 
         <TextView
+            android:id="@+id/tvAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-Rp300.000"
@@ -93,7 +98,7 @@
                 android:src="@drawable/ic_location" />
 
             <TextView
-                android:id="@+id/income_home_label"
+                android:id="@+id/tvLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/urbanist_regular"
