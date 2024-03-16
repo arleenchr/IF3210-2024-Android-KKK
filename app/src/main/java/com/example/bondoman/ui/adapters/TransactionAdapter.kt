@@ -27,7 +27,7 @@ class TransactionAdapter(private val transactions: List<Transaction>) : Recycler
         holder.tvTitle.text = transaction.title
         holder.tvCategory.text = transaction.category
         holder.tvAmount.text = "$${transaction.amount}"
-        holder.tvLocation.text = transaction.location.toString()
+        holder.tvLocation.text = transaction.location.getName()?.toString()
     }
 
     override fun getItemCount(): Int = transactions.size

@@ -12,6 +12,7 @@ import com.example.bondoman.R
 import com.example.bondoman.models.Transaction
 import com.example.bondoman.ui.adapters.TransactionAdapter
 import com.example.bondoman.utils.VerticalSpaceItemDecoration
+import com.google.android.libraries.places.api.model.Place
 import java.sql.Timestamp
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,16 +43,21 @@ class TransactionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        val place = Place.builder()
+            .setAddress("123 Main St")
+            .setName("Grocery Store")
+            .build()
+
         // Create a list of transactions
         // TODO: Replace with actual data from the database
         val transactions = listOf(
-            Transaction("Groceries", 100000, "Food", Location("Walmart"), Timestamp(System.currentTimeMillis())),
-            Transaction("Gas", 5000, "Transportation", Location("Shell"), Timestamp(System.currentTimeMillis())),
-            Transaction("Coffee", 500, "Food", Location("Starbucks"), Timestamp(System.currentTimeMillis())),
-            Transaction("Lunch", 1500, "Food", Location("Chipotle"), Timestamp(System.currentTimeMillis())),
-            Transaction("Dinner", 3000, "Food", Location("Chick-fil-A"), Timestamp(System.currentTimeMillis())),
-            Transaction("Uber", 2000, "Transportation", Location("Uber"), Timestamp(System.currentTimeMillis())),
-            Transaction("Lyft", 2500, "Transportation", Location("Lyft"), Timestamp(System.currentTimeMillis()))
+            Transaction("Groceries", 100000, "Food", place, Timestamp(System.currentTimeMillis())),
+            Transaction("Gas", 5000, "Transportation", place, Timestamp(System.currentTimeMillis())),
+            Transaction("Coffee", 500, "Food", place, Timestamp(System.currentTimeMillis())),
+            Transaction("Lunch", 1500, "Food", place, Timestamp(System.currentTimeMillis())),
+            Transaction("Dinner", 2000, "Food", place, Timestamp(System.currentTimeMillis())),
+            Transaction("Movie", 1000, "Entertainment", place, Timestamp(System.currentTimeMillis())),
+            Transaction("Clothes", 50000, "Shopping", place, Timestamp(System.currentTimeMillis())),
         )
 
         val view = inflater.inflate(R.layout.fragment_transaction, container, false)
