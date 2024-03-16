@@ -7,7 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.R
+import com.example.bondoman.models.Transaction
+import com.example.bondoman.ui.adapters.TransactionAdapter
+import com.example.bondoman.ui.transaction.TransactionFragment
+import com.google.android.libraries.places.api.model.Place
+import java.sql.Timestamp
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -48,6 +55,36 @@ class HomeFragment : Fragment() {
 
         // Set text to the TextView
         textView.text = username
+
+        // TODO: Replace with actual data from the database
+        val place = Place.builder()
+            .setAddress("123 Main St")
+            .setName("Grocery Store")
+            .build()
+
+        val transactions = listOf(
+            Transaction("Groceries", 100000, "Food", place, Timestamp(System.currentTimeMillis())),
+            Transaction("Gas", 5000, "Transportation", place, Timestamp(System.currentTimeMillis())),
+            Transaction("Coffee", 500, "Food", place, Timestamp(System.currentTimeMillis())),
+        )
+
+        val recyclerView: RecyclerView = view.findViewById(R.id.transaction_recycler_view)
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = TransactionAdapter(transactions)
+        }
+
+        // Find the see all button
+        val seeAllButton: TextView = view.findViewById(R.id.see_all_button)
+
+        // Set OnClickListener for the see all button to navigate to the TransactionFragment
+        seeAllButton.setOnClickListener {
+            val transactionFragment = TransactionFragment()
+            val transactionFragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+            transactionFragmentTransaction.replace(R.id.container, transactionFragment)
+            transactionFragmentTransaction.addToBackStack(null)
+            transactionFragmentTransaction.commit()
+        }
 
         return view
     }

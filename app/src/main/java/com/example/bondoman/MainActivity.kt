@@ -12,6 +12,8 @@ import com.example.bondoman.ui.transaction.TransactionFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.content.Intent
+import android.view.Gravity
+import android.view.LayoutInflater
 import com.example.bondoman.service.TokenCheckService
 
 class MainActivity : AppCompatActivity() {
@@ -29,7 +31,13 @@ class MainActivity : AppCompatActivity() {
 
         val actionBar: ActionBar? = supportActionBar
         actionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-        actionBar?.setCustomView(R.layout.header)
+        val customLayout = LayoutInflater.from(this).inflate(R.layout.header, null)
+        val layoutParams = ActionBar.LayoutParams(
+            ActionBar.LayoutParams.MATCH_PARENT,
+            ActionBar.LayoutParams.MATCH_PARENT,
+            Gravity.CENTER
+        )
+        actionBar?.setCustomView(customLayout, layoutParams)
 
         bottomNav = binding.bottomNav
         fab = binding.fab
