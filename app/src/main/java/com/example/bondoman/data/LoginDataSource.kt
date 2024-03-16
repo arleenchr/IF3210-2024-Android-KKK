@@ -50,7 +50,6 @@ class LoginDataSource {
 
 
     fun logout(context: Context) {
-        println("LOGOUT BRO")
         // Create an Intent to start the LoginActivity
         val intent = Intent(context, LoginActivity::class.java)
 
