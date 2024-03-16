@@ -30,14 +30,9 @@ class MainActivity : AppCompatActivity() {
         startService(serviceIntent)
 
         val actionBar: ActionBar? = supportActionBar
-        actionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-        val customLayout = LayoutInflater.from(this).inflate(R.layout.header, null)
-        val layoutParams = ActionBar.LayoutParams(
-            ActionBar.LayoutParams.MATCH_PARENT,
-            ActionBar.LayoutParams.MATCH_PARENT,
-            Gravity.CENTER
-        )
-        actionBar?.setCustomView(customLayout, layoutParams)
+
+        // Hide the action bar
+        actionBar?.hide()
 
         bottomNav = binding.bottomNav
         fab = binding.fab
