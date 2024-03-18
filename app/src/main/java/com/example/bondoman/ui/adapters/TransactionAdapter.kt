@@ -1,5 +1,6 @@
 package com.example.bondoman.ui.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.models.Transaction
 import com.example.bondoman.R
+import com.example.bondoman.ViewTransaction
 
 class TransactionAdapter(private val transactions: List<Transaction>) : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
 
@@ -15,6 +17,15 @@ class TransactionAdapter(private val transactions: List<Transaction>) : Recycler
         var tvCategory: TextView = itemView.findViewById(R.id.tvCategory)
         var tvAmount: TextView = itemView.findViewById(R.id.tvAmount)
         var tvLocation: TextView = itemView.findViewById(R.id.tvLocation)
+
+        init {
+            // Set OnClickListener to start ViewTransaction activity when item is clicked
+            itemView.setOnClickListener {
+                val context = itemView.context
+                val intent = Intent(context, ViewTransaction::class.java)
+                context.startActivity(intent)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {

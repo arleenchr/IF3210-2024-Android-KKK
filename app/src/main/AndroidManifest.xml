@@ -21,6 +21,9 @@
         android:theme="@style/Theme.Bondoman"
         tools:targetApi="31">
         <activity
+            android:name=".ViewTransaction"
+            android:exported="false" />
+        <activity
             android:name=".AddTransaction"
             android:exported="false" />
 
@@ -63,7 +66,7 @@
         <activity
             android:name=".ScanActivity"
             android:exported="true"
-            android:label="Scan Receipts"></activity>
+            android:label="Scan Receipts" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

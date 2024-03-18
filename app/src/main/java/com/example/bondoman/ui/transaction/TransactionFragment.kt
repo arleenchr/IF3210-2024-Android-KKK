@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.AddTransaction
 import com.example.bondoman.R
+import com.example.bondoman.ViewTransaction
 import com.example.bondoman.models.Transaction
 import com.example.bondoman.ui.adapters.TransactionAdapter
 import com.example.bondoman.utils.VerticalSpaceItemDecoration
