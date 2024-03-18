@@ -42,10 +42,12 @@
         android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/green_700"
-        android:layout_gravity="end"
+        android:backgroundTint="@color/green_500"
         android:src="@drawable/vscadd"
-        tools:ignore="MissingConstraints"
-        app:layout_anchorGravity="bottom|start" />
+        app:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:tooltipText="Add transaction"
+        android:contentDescription="Add transaction" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
