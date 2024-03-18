@@ -1,5 +1,6 @@
 package com.example.bondoman.ui.transaction
 
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bondoman.AddTransaction
 import com.example.bondoman.R
 import com.example.bondoman.models.Transaction
 import com.example.bondoman.ui.adapters.TransactionAdapter
 import com.example.bondoman.utils.VerticalSpaceItemDecoration
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.sql.Timestamp
 
 // TODO: Rename parameter arguments, choose names that match
@@ -70,6 +73,13 @@ class TransactionFragment : Fragment() {
             // Add item decoration for spacing
             val verticalSpacing = resources.getDimensionPixelSize(R.dimen.item_vertical_spacing)
             addItemDecoration(VerticalSpaceItemDecoration(verticalSpacing))
+        }
+
+        val addButton = view.findViewById<FloatingActionButton>(R.id.add)
+        addButton.setOnClickListener {
+            // Replace YourActivityToOpen::class.java with the activity you want to open
+            val intent = Intent(requireContext(), AddTransaction::class.java)
+            startActivity(intent)
         }
 
         return view

@@ -10,10 +10,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBaseline_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -36,6 +36,16 @@
             android:scrollbars="none"
             android:layout_marginTop="12dp"
             tools:listitem="@layout/item_transaction" />
-
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/green_700"
+        android:layout_gravity="end"
+        android:src="@drawable/vscadd"
+        tools:ignore="MissingConstraints"
+        app:layout_anchorGravity="bottom|start" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
