@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bondoman.models.Transaction
 import com.example.bondoman.R
 import com.example.bondoman.ViewTransaction
+import com.example.bondoman.room.TransactionEntity
 
-class TransactionAdapter(private val transactions: List<Transaction>) : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
+class TransactionAdapter(private val transactions: List<TransactionEntity>) : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
 
-    class TransactionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class TransactionViewHolder(itemView: View, transactions: List<TransactionEntity>) : RecyclerView.ViewHolder(itemView) {
         var tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
         var tvCategory: TextView = itemView.findViewById(R.id.tvCategory)
         var tvAmount: TextView = itemView.findViewById(R.id.tvAmount)
@@ -23,6 +23,8 @@ class TransactionAdapter(private val transactions: List<Transaction>) : Recycler
             itemView.setOnClickListener {
                 val context = itemView.context
                 val intent = Intent(context, ViewTransaction::class.java)
+                val transactionId = transactions[adapterPosition].id
+                intent.putExtra("id", transactionId)
                 context.startActivity(intent)
             }
         }
@@ -30,15 +32,15 @@ class TransactionAdapter(private val transactions: List<Transaction>) : Recycler
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_transaction, parent, false)
-        return TransactionViewHolder(view)
+        return TransactionViewHolder(view, transactions)
     }
 
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
         val transaction = transactions[position]
         holder.tvTitle.text = transaction.title
         holder.tvCategory.text = transaction.category
-        holder.tvAmount.text = "$${transaction.amount}"
-        holder.tvLocation.text = transaction.location.getName()?.toString()
+        holder.tvAmount.text = "Rp${transaction.amount}"
+        holder.tvLocation.text = transaction.location.name
     }
 
     override fun getItemCount(): Int = transactions.size

@@ -5,7 +5,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.OkHttpClient
 import okhttp3.Interceptor
 import android.content.SharedPreferences
-import android.content.Context
 
 object RetrofitClient {
     private const val BASE_URL = "https://pbd-backend-2024.vercel.app"

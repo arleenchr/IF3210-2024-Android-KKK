@@ -7,10 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bondoman.MainActivity
 import com.example.bondoman.R
 import com.example.bondoman.models.Transaction
+import com.example.bondoman.room.TransactionDAO
+import com.example.bondoman.room.TransactionDatabase
+import com.example.bondoman.room.TransactionEntity
 import com.example.bondoman.ui.adapters.TransactionAdapter
 import com.example.bondoman.ui.transaction.TransactionFragment
 import com.google.android.libraries.places.api.model.Place
@@ -30,6 +35,7 @@ class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var transactionDAO: TransactionDAO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,34 +62,28 @@ class HomeFragment : Fragment() {
         // Set text to the TextView
         textView.text = username
 
-        // TODO: Replace with actual data from the database
-        val place = Place.builder()
-            .setAddress("123 Main St")
-            .setName("Grocery Store")
-            .build()
-
-        val transactions = listOf(
-            Transaction("Groceries", 100000, "Food", place, Timestamp(System.currentTimeMillis())),
-            Transaction("Gas", 5000, "Transportation", place, Timestamp(System.currentTimeMillis())),
-            Transaction("Coffee", 500, "Food", place, Timestamp(System.currentTimeMillis())),
-        )
+        transactionDAO = TransactionDatabase.getDatabase(requireContext()).transactionDAO
 
         val recyclerView: RecyclerView = view.findViewById(R.id.transaction_recycler_view)
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = TransactionAdapter(transactions)
+
+        val transactionObserver = Observer<List<TransactionEntity>> { transactions ->
+            if (transactions != null) {
+                recyclerView.apply {
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = TransactionAdapter(transactions)
+                }
+            }
         }
+
+        // Observe the LiveData
+        transactionDAO.getTopTransaction().observe(viewLifecycleOwner, transactionObserver)
 
         // Find the see all button
         val seeAllButton: TextView = view.findViewById(R.id.see_all_button)
 
         // Set OnClickListener for the see all button to navigate to the TransactionFragment
         seeAllButton.setOnClickListener {
-            val transactionFragment = TransactionFragment()
-            val transactionFragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            transactionFragmentTransaction.replace(R.id.container, transactionFragment)
-            transactionFragmentTransaction.addToBackStack(null)
-            transactionFragmentTransaction.commit()
+            (requireActivity() as MainActivity).bottomNav.selectedItemId = R.id.transaction
         }
 
         return view

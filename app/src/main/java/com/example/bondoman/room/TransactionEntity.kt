@@ -4,9 +4,10 @@ import android.location.Location
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.android.libraries.places.api.model.Place
 import java.sql.Timestamp
 
-@Entity(tableName = "transaction", primaryKeys = ["title", "createdAt"])
+@Entity(tableName = "transaction")
 data class TransactionEntity (
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "id")
@@ -22,7 +23,7 @@ data class TransactionEntity (
         var category: String = "",
 
         @ColumnInfo(name = "location")
-        var location: Location,
+        var location: Place,
 
         @ColumnInfo(name = "createdAt")
         var createdAt: Timestamp,

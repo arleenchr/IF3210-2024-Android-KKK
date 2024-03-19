@@ -7,12 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.AddTransaction
 import com.example.bondoman.R
 import com.example.bondoman.ViewTransaction
 import com.example.bondoman.models.Transaction
+import com.example.bondoman.room.TransactionDAO
+import com.example.bondoman.room.TransactionDatabase
+import com.example.bondoman.room.TransactionEntity
 import com.example.bondoman.ui.adapters.TransactionAdapter
 import com.example.bondoman.utils.VerticalSpaceItemDecoration
 import com.google.android.libraries.places.api.model.Place
@@ -33,6 +37,7 @@ class TransactionFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var transactionDAO: TransactionDAO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,40 +51,34 @@ class TransactionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        val place = Place.builder()
-            .setAddress("123 Main St")
-            .setName("Grocery Store")
-            .build()
-
         // Create a list of transactions
-        // TODO: Replace with actual data from the database
-        val transactions = listOf(
-            Transaction("Groceries", 100000, "Food", place, Timestamp(System.currentTimeMillis())),
-            Transaction("Gas", 5000, "Transportation", place, Timestamp(System.currentTimeMillis())),
-            Transaction("Coffee", 500, "Food", place, Timestamp(System.currentTimeMillis())),
-            Transaction("Lunch", 1500, "Food", place, Timestamp(System.currentTimeMillis())),
-            Transaction("Dinner", 2000, "Food", place, Timestamp(System.currentTimeMillis())),
-            Transaction("Movie", 1000, "Entertainment", place, Timestamp(System.currentTimeMillis())),
-            Transaction("Clothes", 50000, "Shopping", place, Timestamp(System.currentTimeMillis())),
-        )
+        transactionDAO = TransactionDatabase.getDatabase(requireContext()).transactionDAO
 
         val view = inflater.inflate(R.layout.fragment_transaction, container, false)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.transaction_recycler_view)
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = TransactionAdapter(transactions)
 
-            // Add item decoration for spacing
-            val verticalSpacing = resources.getDimensionPixelSize(R.dimen.item_vertical_spacing)
-            addItemDecoration(VerticalSpaceItemDecoration(verticalSpacing))
+        val transactionObserver = Observer<List<TransactionEntity>> { transactions ->
+            if (transactions != null) {
+                recyclerView.apply {
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = TransactionAdapter(transactions)
+
+                    // Add item decoration for spacing
+                    val verticalSpacing = resources.getDimensionPixelSize(R.dimen.item_vertical_spacing)
+                    addItemDecoration(VerticalSpaceItemDecoration(verticalSpacing))
+                }
+            }
         }
+
+        // Observe the LiveData
+        transactionDAO.getAllTransaction().observe(viewLifecycleOwner, transactionObserver)
 
         val addButton = view.findViewById<FloatingActionButton>(R.id.add)
         addButton.setOnClickListener {
             // Replace YourActivityToOpen::class.java with the activity you want to open
             val intent = Intent(requireContext(), AddTransaction::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent)
         }
 

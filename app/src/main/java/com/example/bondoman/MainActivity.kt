@@ -15,10 +15,11 @@ import android.content.Intent
 import android.view.Gravity
 import android.view.LayoutInflater
 import com.example.bondoman.service.TokenCheckService
+import com.google.android.libraries.places.api.Places
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var bottomNav: BottomNavigationView
+    lateinit var bottomNav: BottomNavigationView
     private lateinit var fab: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +34,9 @@ class MainActivity : AppCompatActivity() {
 
         // Hide the action bar
         actionBar?.hide()
+
+        // Initialize Places SDK
+        Places.initialize(applicationContext, getString(R.string.places_api_key))
 
         bottomNav = binding.bottomNav
         fab = binding.fab
