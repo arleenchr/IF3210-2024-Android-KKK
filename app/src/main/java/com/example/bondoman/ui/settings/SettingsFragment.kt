@@ -9,8 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceFragmentCompat
@@ -25,8 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import java.io.File
-import java.io.IOException
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
@@ -35,7 +31,7 @@ class SettingsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment using View Binding
         transactionDAO = TransactionDatabase.getDatabase(requireContext()).transactionDAO
         binding = FragmentSettingsBinding.inflate(inflater, container, false)
@@ -78,7 +74,7 @@ class SettingsFragment : Fragment() {
             val transactions = transactionDAO.getAllTransactionsDirect()
 
             // Fill the sheet with transaction data
-            transactions?.forEachIndexed { index, transaction ->
+            transactions.forEachIndexed { index, transaction ->
                 val row = sheet.createRow(index + 1)
                 row.createCell(0).setCellValue(transaction.title)
                 row.createCell(1).setCellValue(transaction.amount.toDouble())
@@ -87,7 +83,6 @@ class SettingsFragment : Fragment() {
                 row.createCell(4).setCellValue(transaction.createdAt.toString())
             }
 
-            // Write the workbook to a file
             // Prepare ContentValues to create a new MediaStore entry
             val contentValues = ContentValues().apply {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, "transactions.xlsx")
@@ -101,8 +96,8 @@ class SettingsFragment : Fragment() {
 
             try {
                 // Use the obtained URI to write the workbook
-                uri?.let { uri ->
-                    resolver.openOutputStream(uri).use { outputStream ->
+                uri?.let { obtainedUri ->
+                    resolver.openOutputStream(obtainedUri).use { outputStream ->
                         workbook.write(outputStream)
                     }
                 }
@@ -118,7 +113,6 @@ class SettingsFragment : Fragment() {
             }
         }
     }
-
 }
 
 class SettingsPreferenceFragment : PreferenceFragmentCompat() {
