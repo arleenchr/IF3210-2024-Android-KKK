@@ -92,7 +92,7 @@ class EditTransaction : AppCompatActivity() {
             currentTransaction = transactionDAO.getTransaction(transactionId)
             binding.apply {
                 title.setText(currentTransaction.title)
-                amount.setText(NumberFormat.getNumberInstance(Locale("in", "ID")).format(currentTransaction.amount))
+                amount.setText(currentTransaction.amount.toString())
                 category.setSelection(if (currentTransaction.category == "Income") 0 else 1)
                 autocompleteFragment.setText(currentTransaction.location.name)
 
@@ -105,6 +105,12 @@ class EditTransaction : AppCompatActivity() {
                 // Assign the Place object to selectedPlace
                 selectedPlace = place
             }
+        }
+
+        saveButton.setOnClickListener {
+            onSaveButtonClicked()
+            Toast.makeText(applicationContext, "Successfully edited transaction", Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 
