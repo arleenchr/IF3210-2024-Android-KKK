@@ -72,18 +72,18 @@ class EditTransaction : AppCompatActivity() {
             }
         })
 
-        // Set background color
-        autocompleteFragment.view?.setBackgroundColor(Color.parseColor("#313131"))
+        // Set corner radius for the input field
+        autocompleteFragment.view?.setBackgroundResource(R.drawable.input_container)
 
         // Set text color for the input field
         val autoCompleteTextView = autocompleteFragment.view?.findViewById<EditText>(com.google.android.libraries.places.R.id.places_autocomplete_search_input)
         autoCompleteTextView?.setTextColor(Color.WHITE)
 
-        saveButton.setOnClickListener {
-            onSaveButtonClicked()
-            Toast.makeText(applicationContext, "Successfully edited transaction", Toast.LENGTH_SHORT).show()
-            finish()
-        }
+        // Set the text size for the input field
+        autoCompleteTextView?.textSize = 16f
+
+        // Set the font for the input field
+        autoCompleteTextView?.typeface = resources.getFont(R.font.urbanist_medium)
 
         val transactionId = intent.getLongExtra("id", -1)
         if (transactionId != -1L) {

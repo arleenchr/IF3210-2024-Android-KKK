@@ -34,6 +34,7 @@
             <EditText
                 android:id="@+id/title"
                 style="@style/InputField"
+                android:fontFamily="@font/urbanist_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
@@ -76,6 +77,7 @@
                 <EditText
                     android:id="@+id/amount"
                     style="@style/InputField"
+                    android:fontFamily="@font/urbanist_medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/prefixCurrency"
@@ -131,6 +133,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                    app:cornerRadius="8dp"
                     tools:ignore="MissingConstraints,MissingDefaultResource" />
         </LinearLayout>
         <Button
