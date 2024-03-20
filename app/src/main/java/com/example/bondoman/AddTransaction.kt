@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.bondoman.room.TransactionDAO
@@ -98,13 +99,13 @@ class AddTransaction : AppCompatActivity() {
 
                     // Assign the Place object to selectedPlace
                     selectedPlace = place
-
                 }
             }
         }
 
         saveButton.setOnClickListener {
             onSaveButtonClicked()
+            Toast.makeText(applicationContext, "Successfully created transaction", Toast.LENGTH_SHORT).show()
             finish()
         }
     }

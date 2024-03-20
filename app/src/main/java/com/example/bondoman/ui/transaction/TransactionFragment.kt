@@ -76,7 +76,6 @@ class TransactionFragment : Fragment() {
 
         val addButton = view.findViewById<FloatingActionButton>(R.id.add)
         addButton.setOnClickListener {
-            // Replace YourActivityToOpen::class.java with the activity you want to open
             val intent = Intent(requireContext(), AddTransaction::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent)

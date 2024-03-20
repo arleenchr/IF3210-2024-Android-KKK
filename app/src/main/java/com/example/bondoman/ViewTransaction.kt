@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.example.bondoman.databinding.ActivityViewTransactionBinding
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
@@ -25,25 +26,37 @@ class ViewTransaction : AppCompatActivity() {
 
         val transactionId = intent.getLongExtra("id", -1)
         if (transactionId != -1L) {
-            val transaction = transactionDAO.getTransaction(transactionId)
-            binding.apply {
-                amount.text = getString(R.string.rp, transaction.amount.toString())
-                category.text = transaction.category
-                date.text = convertTimestampToDate(transaction.createdAt.time)
-                locationName.text = transaction.location.name
-                locationGmaps.text = transaction.location.address
-                time.text = convertTimestampToTime(transaction.createdAt.time)
-                total.text = getString(R.string.rp, transaction.amount.toString())
+            // Observe the LiveData object returned by getTransaction
+            transactionDAO.getLiveTransaction(transactionId).observe(this) { transaction ->
+                transaction?.let {
+                    binding.apply {
+                        amount.text = getString(R.string.rp, transaction.amount.toString())
+                        category.text = transaction.category
+                        date.text = convertTimestampToDate(transaction.createdAt.time)
+                        locationName.text = transaction.location.name
+                        locationGmaps.text = transaction.location.address
+                        time.text = convertTimestampToTime(transaction.createdAt.time)
+                        total.text = getString(R.string.rp, transaction.amount.toString())
 
-                // Set click listener for locationGmaps TextView
-                locationGmaps.setOnClickListener {
-                    transaction.location.name?.let { it1 -> openLocationURL(it1) }
-                }
+                        // Set click listener for locationGmaps TextView
+                        locationGmaps.setOnClickListener {
+                            transaction.location.name?.let { it1 -> openLocationURL(it1) }
+                        }
 
-                // Set click listener for delete button
-                deleteButton.setOnClickListener {
-                    transactionDAO.deleteTransaction(transaction)
-                    finish()
+                        // Set click listener for delete button
+                        deleteButton.setOnClickListener {
+                            transactionDAO.deleteTransaction(transaction)
+                            Toast.makeText(applicationContext, "Successfully deleted transaction", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+
+                        // Set click listener for edit button
+                        editButton.setOnClickListener {
+                            val intent = Intent(applicationContext, EditTransaction::class.java)
+                            intent.putExtra("id", transactionId)
+                            startActivity(intent)
+                        }
+                    }
                 }
             }
         }
