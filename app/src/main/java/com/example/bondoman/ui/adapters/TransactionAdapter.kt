@@ -48,7 +48,14 @@ class TransactionAdapter(private val transactions: List<TransactionEntity>) : Re
                 R.drawable.ic_expense_item
             }
         )
-        holder.tvTitle.text = transaction.title
+
+        var title = transaction.title
+        if (title != null){
+            if (title.length > 15){
+                title = title.substring(0,15) + "..."
+            }
+        }
+        holder.tvTitle.text = title
         holder.tvCategory.text = transaction.category
         holder.tvAmount.text = "Rp${NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.amount)}"
         if (transaction.category == "Income") {
