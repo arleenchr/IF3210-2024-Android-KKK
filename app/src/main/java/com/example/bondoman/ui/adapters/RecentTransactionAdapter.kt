@@ -13,7 +13,7 @@ import com.example.bondoman.room.TransactionEntity
 import java.text.NumberFormat
 import java.util.Locale
 
-class RecentTransactionAdapter(private val transactions: List<TransactionEntity>) : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
+class RecentTransactionAdapter(private val transactions: List<TransactionEntity>) : RecyclerView.Adapter<RecentTransactionAdapter.TransactionViewHolder>() {
 
     class TransactionViewHolder(itemView: View, transactions: List<TransactionEntity>) : RecyclerView.ViewHolder(itemView) {
         var icon: ImageView = itemView.findViewById(R.id.transaction_icon)
@@ -34,12 +34,12 @@ class RecentTransactionAdapter(private val transactions: List<TransactionEntity>
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionAdapter.TransactionViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_transaction, parent, false)
-        return TransactionAdapter.TransactionViewHolder(view, transactions)
+        return TransactionViewHolder(view, transactions)
     }
 
-    override fun onBindViewHolder(holder: TransactionAdapter.TransactionViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
         val transaction = transactions[position]
         holder.icon.setImageResource(
             if (transaction.category == "Income") {

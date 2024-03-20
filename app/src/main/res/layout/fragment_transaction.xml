@@ -33,7 +33,7 @@
         android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/green_500"
+        android:backgroundTint="@color/green_700"
         android:src="@drawable/vscadd"
         app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"

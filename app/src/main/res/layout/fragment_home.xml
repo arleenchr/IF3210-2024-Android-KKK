@@ -92,7 +92,7 @@
                     android:id="@+id/income_home_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/maisonneueextended_book"
+                    android:fontFamily="@font/maisonneueextended_medium"
                     android:text="This month's income"
                     android:textAlignment="textEnd"
                     android:textColor="@color/gray_100"
