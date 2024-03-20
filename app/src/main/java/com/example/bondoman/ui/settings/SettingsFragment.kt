@@ -1,5 +1,6 @@
 package com.example.bondoman.ui.settings
 
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -27,6 +28,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
     private lateinit var transactionDAO: TransactionDAO
+    private var fileFormatOptions = arrayOf("XLS", "XLSX")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,13 +53,29 @@ class SettingsFragment : Fragment() {
         }
 
         binding.saveTransactionList.setOnClickListener {
-            saveTransactionsToExcel()
+            showFileFormatDialog()
         }
 
         return binding.root
     }
 
-    private fun saveTransactionsToExcel() {
+    private fun showFileFormatDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Choose a format")
+
+        builder.setItems(fileFormatOptions) { dialog, which ->
+            when (which) {
+                0 -> saveTransactionsToExcel("XLS")
+                1 -> saveTransactionsToExcel("XLSX")
+            }
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+
+    private fun saveTransactionsToExcel(format: String = "XLSX") {
         lifecycleScope.launch(Dispatchers.IO) {
             val workbook = XSSFWorkbook()
             val sheet = workbook.createSheet("Transactions")
@@ -85,8 +103,13 @@ class SettingsFragment : Fragment() {
 
             // Prepare ContentValues to create a new MediaStore entry
             val contentValues = ContentValues().apply {
-                put(MediaStore.MediaColumns.DISPLAY_NAME, "transactions.xlsx")
-                put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                if (format == "XLS") {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, "transactions.xls")
+                    put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.ms-excel")
+                } else {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, "transactions.xlsx")
+                    put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                }
                 put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
             }
 
