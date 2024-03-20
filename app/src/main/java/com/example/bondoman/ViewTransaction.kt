@@ -9,6 +9,7 @@ import com.example.bondoman.databinding.ActivityViewTransactionBinding
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
 import java.sql.Date
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -30,13 +31,13 @@ class ViewTransaction : AppCompatActivity() {
             transactionDAO.getLiveTransaction(transactionId).observe(this) { transaction ->
                 transaction?.let {
                     binding.apply {
-                        amount.text = getString(R.string.rp, transaction.amount.toString())
+                        amount.text = getString(R.string.rp, NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.amount))
                         category.text = transaction.category
                         date.text = convertTimestampToDate(transaction.createdAt.time)
                         title.text = transaction.title
                         locationGmaps.text = transaction.location.address
                         time.text = convertTimestampToTime(transaction.createdAt.time)
-                        total.text = getString(R.string.rp, transaction.amount.toString())
+                        total.text = getString(R.string.rp, NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.amount))
 
                         // Set click listener for locationGmaps TextView
                         locationGmaps.setOnClickListener {

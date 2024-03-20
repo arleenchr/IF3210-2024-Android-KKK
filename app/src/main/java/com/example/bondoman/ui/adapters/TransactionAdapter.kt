@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.R
 import com.example.bondoman.ViewTransaction
 import com.example.bondoman.room.TransactionEntity
+import java.text.NumberFormat
+import java.util.Locale
 
 class TransactionAdapter(private val transactions: List<TransactionEntity>) : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
 
@@ -39,7 +41,7 @@ class TransactionAdapter(private val transactions: List<TransactionEntity>) : Re
         val transaction = transactions[position]
         holder.tvTitle.text = transaction.title
         holder.tvCategory.text = transaction.category
-        holder.tvAmount.text = "Rp${transaction.amount}"
+        holder.tvAmount.text = "Rp${NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.amount)}"
 
         var locationName = transaction.location.name
         if (locationName != null) {

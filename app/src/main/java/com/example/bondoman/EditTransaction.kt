@@ -32,6 +32,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.sql.Timestamp
+import java.text.NumberFormat
+import java.util.Locale
 
 class EditTransaction : AppCompatActivity() {
     private lateinit var transactionDAO: TransactionDAO
@@ -90,7 +92,7 @@ class EditTransaction : AppCompatActivity() {
             currentTransaction = transactionDAO.getTransaction(transactionId)
             binding.apply {
                 title.setText(currentTransaction.title)
-                amount.setText(currentTransaction.amount.toString())
+                amount.setText(NumberFormat.getNumberInstance(Locale("in", "ID")).format(currentTransaction.amount))
                 category.setSelection(if (currentTransaction.category == "Income") 0 else 1)
                 autocompleteFragment.setText(currentTransaction.location.name)
 
