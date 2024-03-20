@@ -3,6 +3,7 @@ package com.example.bondoman
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -77,7 +78,28 @@ class AddTransaction : AppCompatActivity() {
 
         fetchCurrentLocation { location ->
             val origin = LatLng(location.latitude, location.longitude)
-            autocompleteFragment.setLocationBias(RectangularBounds.newInstance(origin, origin))
+
+            // Use Geocoder to get the address from LatLng
+            val geocoder = Geocoder(this)
+            val addresses = geocoder.getFromLocation(origin.latitude, origin.longitude, 1)
+
+            // Check if address is found
+            if (addresses != null) {
+                if (addresses.isNotEmpty()) {
+                    val placeName = addresses[0]?.getAddressLine(0) // Get the first line of the address
+                    autocompleteFragment.setText(placeName)
+
+                    // Build the Place object with the retrieved LatLng
+                    val place = Place.builder()
+                        .setLatLng(origin)
+                        .setName(placeName)
+                        .build()
+
+                    // Assign the Place object to selectedPlace
+                    selectedPlace = place
+
+                }
+            }
         }
 
         saveButton.setOnClickListener {
@@ -105,6 +127,7 @@ class AddTransaction : AppCompatActivity() {
                 ),
                 1001
             )
+            return
         }
 
         // Use fused location provider client to get the last known location
@@ -149,6 +172,39 @@ class AddTransaction : AppCompatActivity() {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 transactionDAO.insertTransaction(transaction)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1001) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                fetchCurrentLocation { location ->
+                    val origin = LatLng(location.latitude, location.longitude)
+
+                    // Use Geocoder to get the address from LatLng
+                    val geocoder = Geocoder(this)
+                    val addresses = geocoder.getFromLocation(origin.latitude, origin.longitude, 1)
+
+                    // Check if address is found
+                    if (addresses != null) {
+                        if (addresses.isNotEmpty()) {
+                            val placeName = addresses[0]?.getAddressLine(0) // Get the first line of the address
+                            autocompleteFragment.setText(placeName)
+
+                            // Build the Place object with the retrieved LatLng
+                            val place = Place.builder()
+                                .setLatLng(origin)
+                                .setName(placeName)
+                                .build()
+
+                            // Assign the Place object to selectedPlace
+                            selectedPlace = place
+
+                        }
+                    }
+                }
             }
         }
     }
