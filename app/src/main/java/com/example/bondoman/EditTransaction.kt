@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -71,6 +73,23 @@ class EditTransaction : AppCompatActivity() {
 
             override fun onPlaceSelected(place: Place) {
                 selectedPlace = place
+            }
+        })
+
+        autocompleteFragment.view?.findViewById<EditText>(com.google.android.libraries.places.R.id.places_autocomplete_search_input)?.addTextChangedListener(object:
+            TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                // Do nothing
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.isNullOrEmpty()) {
+                    selectedPlace = Place.builder().build()
+                }
             }
         })
 
@@ -163,6 +182,6 @@ class EditTransaction : AppCompatActivity() {
         val title = titleEditText.text.toString().trim()
         val amountText = amountEditText.text.toString().trim()
 
-        return title.isNotEmpty() && amountText.isNotEmpty() && amountText != "0"
+        return title.isNotEmpty() && amountText.isNotEmpty() && amountText != "0" && !selectedPlace.name.isNullOrEmpty()
     }
 }

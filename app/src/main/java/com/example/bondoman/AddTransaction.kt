@@ -230,6 +230,6 @@ class AddTransaction : AppCompatActivity() {
         val title = titleEditText.text.toString().trim()
         val amountText = amountEditText.text.toString().trim()
 
-        return title.isNotEmpty() && amountText.isNotEmpty()
+        return title.isNotEmpty() && amountText.isNotEmpty() && amountText != "0" && !selectedPlace.name.isNullOrEmpty()
     }
 }
