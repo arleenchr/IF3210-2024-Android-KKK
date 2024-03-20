@@ -136,7 +136,7 @@ class EditTransaction : AppCompatActivity() {
             amount = amount,
             category = category,
             location = selectedPlace,
-            createdAt = Timestamp(System.currentTimeMillis())
+            createdAt = currentTransaction.createdAt
         )
 
         // Insert the transaction into the database
