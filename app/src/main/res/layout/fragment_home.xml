@@ -219,7 +219,6 @@
             android:id="@+id/transaction_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
             android:clipToPadding="false"
             android:clipChildren="false"
             android:overScrollMode="never"

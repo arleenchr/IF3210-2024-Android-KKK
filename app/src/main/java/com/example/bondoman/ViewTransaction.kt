@@ -20,7 +20,7 @@ class ViewTransaction : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
-        supportActionBar?.title = "Detail Transaction";
+        supportActionBar?.title = "Transaction Details";
 
         transactionDAO = TransactionDatabase.getDatabase(applicationContext).transactionDAO
 
@@ -33,7 +33,7 @@ class ViewTransaction : AppCompatActivity() {
                         title.text = transaction.title
                         category.text = transaction.category
                         date.text = convertTimestampToDate(transaction.createdAt.time)
-                        locationName.text = transaction.location.name
+                        title.text = transaction.title
                         locationGmaps.text = transaction.location.address
                         time.text = convertTimestampToTime(transaction.createdAt.time)
                         total.text = getString(R.string.rp, transaction.amount.toString())
