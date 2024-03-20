@@ -171,7 +171,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:paddingVertical="12dp"
+            android:paddingVertical="4dp"
             android:paddingHorizontal="16dp"
             android:orientation="horizontal">
 
@@ -189,29 +189,31 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/see_all_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/roundstyle_sm"
-                android:paddingVertical="2dp"
-                android:paddingHorizontal="8dp"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="10dp"
                 android:minHeight="0dp"
-                app:icon="@drawable/ic_arrow_right"
-                app:iconTint="@color/green_500"
-                app:iconGravity="textEnd"
-                android:drawableEnd="@drawable/ic_arrow_right"
-                android:drawableTint="@color/green_500"
-                android:tint="@color/gray_100"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray_100"
+                android:text="See all"
+                android:textColor="@color/white"
                 android:fontFamily="@font/urbanist_medium"
                 android:textSize="12sp"
                 android:textAllCaps="false"
-                android:backgroundTint="#FF213524"
-                android:text="See all"
+                android:gravity="center_vertical"
+                app:icon="@drawable/ic_arrow_right"
+                app:iconTint="@color/green_500"
+                app:iconGravity="textEnd"
+                app:backgroundTint="#213524"
+                app:strokeColor="#14532D"
+                app:strokeWidth="0.5dp"
+                app:cornerRadius="8dp"
+                app:elevation="0dp"
+                app:pressedTranslationZ="0dp"
                 />
+
 
         </LinearLayout>
 

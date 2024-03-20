@@ -135,13 +135,16 @@
         </LinearLayout>
         <Button
             android:id="@+id/saveButton"
-            android:layout_width="wrap_content"
+            android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:text="Save"
             android:fontFamily="@font/urbanist_medium"
             android:textSize="14sp"
             android:textColor="@color/white"
             android:textAllCaps="false"
+            app:cornerRadius="8dp"
+            app:strokeColor="@color/green_900"
+            app:strokeWidth="1dp"
             android:backgroundTint="@color/green_700"
             android:layout_gravity="end"/>
     </LinearLayout>
