@@ -70,19 +70,29 @@
             app:labelVisibilityMode="unlabeled"
             android:background="@color/transparent"
             app:menu="@menu/nav_menu"
+            app:elevation="0dp"
+            app:pressedTranslationZ="0dp"
             app:itemIconTint="@color/bottom_nav_icon_color_selector"
             app:itemTextColor="@color/bottom_nav_icon_color_selector"
             />
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/green_500"
-        android:src="@drawable/baseline_scan_28"
+        android:backgroundTint="@color/green_900"
         android:id="@+id/fab"
         app:layout_anchor="@id/bottomAppBar"
-        app:tint ="@color/white"
+        app:elevation="0dp"
+        app:pressedTranslationZ="0dp"
         android:contentDescription="@string/scan_qr" />
+
+    <include
+        android:id="@+id/customFab"
+        android:layout_marginBottom="27.8dp"
+        layout="@layout/custom_fab"
+        app:layout_anchor="@id/bottomAppBar"
+        app:layout_anchorGravity="center"
+        android:layout_width="56dp"
+    android:layout_height="56dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
