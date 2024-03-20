@@ -3,4 +3,8 @@
     <files-path
         name="camera_photos"
         path="." />
+    <files-path name="transactions" path="Transactions/" />
+    <external-path
+        name="external_files"
+        path="." />
 </paths>
