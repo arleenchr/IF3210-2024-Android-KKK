@@ -89,14 +89,12 @@ class TransactionAdapter(private val items: List<TransactionListItem>) : Recycle
                 }
             }
             tvLocation.text = locationName
-        }
 
-        init {
             // Set OnClickListener to start ViewTransaction activity when item is clicked
             itemView.setOnClickListener {
                 val context = itemView.context
                 val intent = Intent(context, ViewTransaction::class.java)
-                val transactionId = transactions[adapterPosition].id
+                val transactionId = transaction.id
                 intent.putExtra("id", transactionId)
                 context.startActivity(intent)
             }
