@@ -41,7 +41,7 @@ class EditTransaction : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val categories = arrayOf("Income", "Outcome")
+        val categories = arrayOf("Income", "Expense")
 
         val binding = ActivityEditTransactionBinding.inflate(layoutInflater)
         setContentView(binding.root)
