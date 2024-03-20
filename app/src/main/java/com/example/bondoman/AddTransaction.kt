@@ -110,10 +110,15 @@ class AddTransaction : AppCompatActivity() {
             }
         }
 
+
         saveButton.setOnClickListener {
-            onSaveButtonClicked()
-            Toast.makeText(applicationContext, "Successfully created transaction", Toast.LENGTH_SHORT).show()
-            finish()
+            if (validateInputs()) {
+                onSaveButtonClicked()
+                Toast.makeText(this, "Successfully created transaction", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -216,5 +221,15 @@ class AddTransaction : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun validateInputs(): Boolean {
+        val titleEditText = findViewById<EditText>(R.id.title)
+        val amountEditText = findViewById<EditText>(R.id.amount)
+
+        val title = titleEditText.text.toString().trim()
+        val amountText = amountEditText.text.toString().trim()
+
+        return title.isNotEmpty() && amountText.isNotEmpty()
     }
 }
