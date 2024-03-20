@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.R
@@ -15,6 +16,7 @@ import java.util.Locale
 class TransactionAdapter(private val transactions: List<TransactionEntity>) : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
 
     class TransactionViewHolder(itemView: View, transactions: List<TransactionEntity>) : RecyclerView.ViewHolder(itemView) {
+        var icon: ImageView = itemView.findViewById(R.id.transaction_icon)
         var tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
         var tvCategory: TextView = itemView.findViewById(R.id.tvCategory)
         var tvAmount: TextView = itemView.findViewById(R.id.tvAmount)
@@ -39,9 +41,22 @@ class TransactionAdapter(private val transactions: List<TransactionEntity>) : Re
 
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
         val transaction = transactions[position]
+        holder.icon.setImageResource(
+            if (transaction.category == "Income") {
+                R.drawable.ic_income_item
+            } else {
+                R.drawable.ic_expense_item
+            }
+        )
         holder.tvTitle.text = transaction.title
         holder.tvCategory.text = transaction.category
         holder.tvAmount.text = "Rp${NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.amount)}"
+        if (transaction.category == "Income") {
+            holder.tvAmount.setTextColor(holder.tvAmount.context.getColor(R.color.green_500))
+        } else {
+            holder.tvAmount.setTextColor(holder.tvAmount.context.getColor(R.color.red_500))
+        }
+
 
         var locationName = transaction.location.name
         if (locationName != null) {
