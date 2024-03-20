@@ -30,7 +30,7 @@ class ViewTransaction : AppCompatActivity() {
             transactionDAO.getLiveTransaction(transactionId).observe(this) { transaction ->
                 transaction?.let {
                     binding.apply {
-                        amount.text = getString(R.string.rp, transaction.amount.toString())
+                        title.text = transaction.title
                         category.text = transaction.category
                         date.text = convertTimestampToDate(transaction.createdAt.time)
                         locationName.text = transaction.location.name

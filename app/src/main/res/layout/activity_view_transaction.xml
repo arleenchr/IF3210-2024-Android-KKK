@@ -34,10 +34,10 @@
                 android:src="@drawable/ic_expense_item"
                 android:layout_marginBottom="12dp"/>
             <TextView
-                android:id="@+id/amount"
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Rp100.000"
+                android:text="Transaction"
                 android:fontFamily="@font/urbanist_bold"
                 android:textColor="@color/gray_50"
                 android:textSize="16sp"
