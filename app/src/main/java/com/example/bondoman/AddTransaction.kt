@@ -35,7 +35,7 @@ class AddTransaction : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val categories = arrayOf("Income", "Outcome")
+        val categories = arrayOf("Income", "Expense")
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_transaction)

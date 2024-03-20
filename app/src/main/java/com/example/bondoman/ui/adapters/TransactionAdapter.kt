@@ -40,7 +40,14 @@ class TransactionAdapter(private val transactions: List<TransactionEntity>) : Re
         holder.tvTitle.text = transaction.title
         holder.tvCategory.text = transaction.category
         holder.tvAmount.text = "Rp${transaction.amount}"
-        holder.tvLocation.text = transaction.location.name
+
+        var locationName = transaction.location.name
+        if (locationName != null) {
+            if (locationName.length > 25) {
+                locationName = locationName.substring(0, 25) + "..."
+            }
+        }
+        holder.tvLocation.text = locationName
     }
 
     override fun getItemCount(): Int = transactions.size
