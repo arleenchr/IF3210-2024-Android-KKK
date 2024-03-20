@@ -39,6 +39,12 @@ class ViewTransaction : AppCompatActivity() {
                 locationGmaps.setOnClickListener {
                     transaction.location.name?.let { it1 -> openLocationURL(it1) }
                 }
+
+                // Set click listener for delete button
+                deleteButton.setOnClickListener {
+                    transactionDAO.deleteTransaction(transaction)
+                    finish()
+                }
             }
         }
     }
