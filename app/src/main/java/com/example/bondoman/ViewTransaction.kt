@@ -1,5 +1,7 @@
 package com.example.bondoman
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.bondoman.databinding.ActivityViewTransactionBinding
@@ -32,6 +34,11 @@ class ViewTransaction : AppCompatActivity() {
                 locationGmaps.text = transaction.location.address
                 time.text = convertTimestampToTime(transaction.createdAt.time)
                 total.text = getString(R.string.rp, transaction.amount.toString())
+
+                // Set click listener for locationGmaps TextView
+                locationGmaps.setOnClickListener {
+                    transaction.location.name?.let { it1 -> openLocationURL(it1) }
+                }
             }
         }
     }
@@ -53,5 +60,11 @@ class ViewTransaction : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
+    }
+
+    private fun openLocationURL(name: String) {
+        val locationUrl = "https://www.google.com/maps/search/?api=1&query=$name"
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(locationUrl))
+        startActivity(intent)
     }
 }

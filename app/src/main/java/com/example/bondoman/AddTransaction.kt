@@ -93,6 +93,7 @@ class AddTransaction : AppCompatActivity() {
                     val place = Place.builder()
                         .setLatLng(origin)
                         .setName(placeName)
+                        .setAddress(placeName)
                         .build()
 
                     // Assign the Place object to selectedPlace
@@ -197,6 +198,7 @@ class AddTransaction : AppCompatActivity() {
                             val place = Place.builder()
                                 .setLatLng(origin)
                                 .setName(placeName)
+                                .setAddress(placeName)
                                 .build()
 
                             // Assign the Place object to selectedPlace
