@@ -36,6 +36,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
+        <activity
+            android:name=".EditTransaction"
+            android:exported="false"
+            android:theme="@style/Theme.Bondoman.Main">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
 
         <service android:name=".service.TokenCheckService" />
 

@@ -1,5 +1,6 @@
 package com.example.bondoman
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.content.Intent
 import android.view.Gravity
 import android.view.LayoutInflater
+import com.example.bondoman.service.RetrofitClient
 import com.example.bondoman.service.TokenCheckService
 import com.google.android.libraries.places.api.Places
 
@@ -34,6 +36,9 @@ class MainActivity : AppCompatActivity() {
 
         // Hide the action bar
         actionBar?.hide()
+
+        // Set shared preferences
+        RetrofitClient.sharedPreferences = getSharedPreferences("identity", Context.MODE_PRIVATE)
 
         // Initialize Places SDK
         Places.initialize(applicationContext, getString(R.string.places_api_key))

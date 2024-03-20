@@ -15,6 +15,9 @@ interface TransactionDAO {
     fun getTopTransaction(): LiveData<List<TransactionEntity>>
 
     @Query("SELECT * FROM `transaction` WHERE id = :id")
+    fun getLiveTransaction(id: Long): LiveData<TransactionEntity>
+
+    @Query("SELECT * FROM `transaction` WHERE id = :id")
     fun getTransaction(id: Long): TransactionEntity
 
     @Update
