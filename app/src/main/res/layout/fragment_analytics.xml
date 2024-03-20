@@ -181,7 +181,7 @@
                         android:textSize="12sp"
                         android:text="-10% from last month"
                         android:layout_marginBottom="4dp"
-                        android:textColor="@color/green_500" />
+                        android:textColor="@color/gray_500" />
 
 
                 </LinearLayout>

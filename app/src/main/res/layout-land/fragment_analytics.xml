@@ -26,6 +26,7 @@
             android:padding="24dp">
 
             <TextView
+                android:id="@+id/dateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/urbanist_regular"
@@ -67,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
                         android:fontFamily="@font/urbanist_regular"
-                        android:text="All categories"
+                        android:text="All cash inflow"
                         android:textColor="@color/gray_300"
                         android:textSize="12sp" />
 
@@ -86,6 +87,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/incomeText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
@@ -95,6 +97,7 @@
                         android:textSize="20sp" />
 
                     <TextView
+                        android:id="@+id/tvIncomeIndicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
@@ -142,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
                         android:fontFamily="@font/urbanist_regular"
-                        android:text="All categories"
+                        android:text="All cash outflow"
                         android:textColor="@color/gray_300"
                         android:textSize="12sp" />
 
@@ -161,6 +164,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/expenseText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
@@ -170,12 +174,13 @@
                         android:textSize="20sp" />
 
                     <TextView
+                        android:id="@+id/tvExpenseIndicator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
                         android:fontFamily="@font/urbanist_medium"
                         android:text="-10% from last month"
-                        android:textColor="@color/green_500"
+                        android:textColor="@color/gray_500"
                         android:textSize="12sp" />
 
 
