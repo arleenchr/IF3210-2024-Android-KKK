@@ -1,5 +1,6 @@
 package com.example.bondoman.ui.pie_chart
 
+import android.content.Intent
 import com.example.bondoman.R
 import android.graphics.Color
 import android.graphics.Typeface
@@ -12,8 +13,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import com.example.bondoman.EditTransaction
+import com.example.bondoman.room.TransactionDAO
+import com.example.bondoman.room.TransactionDatabase
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
@@ -22,15 +28,21 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class PieChartFragment() : Fragment(), OnChartValueSelectedListener {
     private var chart: PieChart? = null
+    private lateinit var transactionDAO: TransactionDAO
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        transactionDAO = TransactionDatabase.getDatabase(requireContext()).transactionDAO
         return inflater.inflate(R.layout.fragment_analytics, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,40 +72,59 @@ class PieChartFragment() : Fragment(), OnChartValueSelectedListener {
             setEntryLabelTextSize(12f)
         }
 
-        // Set dummy data
-        val entries = ArrayList<PieEntry>()
-        entries.add(PieEntry(18.5f, 0))
-        entries.add(PieEntry(26.7f, 1))
+        val dateTextView = view?.findViewById<TextView>(R.id.dateTextView)
 
-        val dataSet = com.github.mikephil.charting.data.PieDataSet(entries, "Results")
-        dataSet.setDrawIcons(false)
-        dataSet.sliceSpace = 3f
-        dataSet.selectionShift = 5f
-        dataSet.iconsOffset = com.github.mikephil.charting.utils.MPPointF(0f, 40f)
+        // Get current month and year
+        val currentDate = Calendar.getInstance().time
+        val dateFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
+        val formattedDate = dateFormat.format(currentDate)
 
-        val colors = ArrayList<Int>()
-        colors.add(Color.rgb(34, 197, 94))
-        colors.add(Color.rgb(249, 115, 22))
-        dataSet.colors = colors
+        dateTextView?.text = formattedDate
 
-        val data = com.github.mikephil.charting.data.PieData(dataSet)
-        data.setValueFormatter(com.github.mikephil.charting.formatter.PercentFormatter(chart))
-        data.setValueTextSize(11f)
-        data.setValueTextColor(Color.WHITE)
+        // Get data
+        transactionDAO.getTransactionStats().observe(viewLifecycleOwner) { transaction ->
+            transaction?.let {
+                val entries = ArrayList<PieEntry>()
+                entries.add(PieEntry(transaction.totalIncome.toFloat(), 0))
+                entries.add(PieEntry(transaction.totalExpense.toFloat(), 1))
 
-        chart?.highlightValues(null)
-        chart?.data = data
-        chart?.invalidate()
+                val incomeText = view?.findViewById<TextView>(R.id.incomeText)
+                incomeText?.text = getString(R.string.rp, NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.totalIncome))
 
-        // Disable legend
-        val l: Legend = chart!!.legend
-        l.isEnabled = false
+                val expenseText = view?.findViewById<TextView>(R.id.expenseText)
+                expenseText?.text = getString(R.string.rp, NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.totalExpense))
 
-        // Set the font
-        val tf = context?.let { context ->
-            ResourcesCompat.getFont(context, R.font.urbanist_regular)
+                val dataSet = com.github.mikephil.charting.data.PieDataSet(entries, "Results")
+                dataSet.setDrawIcons(false)
+                dataSet.sliceSpace = 3f
+                dataSet.selectionShift = 5f
+                dataSet.iconsOffset = com.github.mikephil.charting.utils.MPPointF(0f, 40f)
+
+                val colors = ArrayList<Int>()
+                colors.add(Color.rgb(34, 197, 94))
+                colors.add(Color.rgb(249, 115, 22))
+                dataSet.colors = colors
+
+                val data = com.github.mikephil.charting.data.PieData(dataSet)
+                data.setValueFormatter(com.github.mikephil.charting.formatter.PercentFormatter(chart))
+                data.setValueTextSize(11f)
+                data.setValueTextColor(Color.WHITE)
+
+                chart?.highlightValues(null)
+                chart?.data = data
+                chart?.invalidate()
+
+                // Disable legend
+                val l: Legend = chart!!.legend
+                l.isEnabled = false
+
+                // Set the font
+                val tf = context?.let { context ->
+                    ResourcesCompat.getFont(context, R.font.urbanist_regular)
+                }
+                chart?.setEntryLabelTypeface(tf)
+            }
         }
-        chart?.setEntryLabelTypeface(tf)
     }
 
     override fun onValueSelected(e: Entry, h: Highlight) {

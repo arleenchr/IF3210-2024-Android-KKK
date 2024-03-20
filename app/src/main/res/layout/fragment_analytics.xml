@@ -26,6 +26,7 @@
             >
 
             <TextView
+                android:id="@+id/dateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/urbanist_regular"
@@ -86,6 +87,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/incomeText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/urbanist_bold"
@@ -161,6 +163,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/expenseText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/urbanist_bold"

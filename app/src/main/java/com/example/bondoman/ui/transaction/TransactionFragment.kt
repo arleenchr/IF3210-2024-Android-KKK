@@ -58,15 +58,17 @@ class TransactionFragment : Fragment() {
 
         val recyclerView: RecyclerView = view.findViewById(R.id.transaction_recycler_view)
 
+        // Add item decoration for spacing
+        val verticalSpacing = resources.getDimensionPixelSize(R.dimen.item_vertical_spacing)
+        recyclerView.apply{
+            addItemDecoration(VerticalSpaceItemDecoration(verticalSpacing))
+        }
+
         val transactionObserver = Observer<List<TransactionEntity>> { transactions ->
             if (transactions != null) {
                 recyclerView.apply {
                     layoutManager = LinearLayoutManager(context)
                     adapter = TransactionAdapter(transactions)
-
-                    // Add item decoration for spacing
-                    val verticalSpacing = resources.getDimensionPixelSize(R.dimen.item_vertical_spacing)
-                    addItemDecoration(VerticalSpaceItemDecoration(verticalSpacing))
                 }
             }
         }

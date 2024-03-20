@@ -20,6 +20,8 @@ import com.example.bondoman.ui.adapters.TransactionAdapter
 import com.example.bondoman.ui.transaction.TransactionFragment
 import com.google.android.libraries.places.api.model.Place
 import java.sql.Timestamp
+import java.text.NumberFormat
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,6 +86,16 @@ class HomeFragment : Fragment() {
         // Set OnClickListener for the see all button to navigate to the TransactionFragment
         seeAllButton.setOnClickListener {
             (requireActivity() as MainActivity).bottomNav.selectedItemId = R.id.transaction
+        }
+
+        transactionDAO.getTransactionStats().observe(viewLifecycleOwner) { transaction ->
+            transaction?.let {
+                val incomeTextView = view.findViewById<TextView>(R.id.income_home_value)
+                incomeTextView.text = getString(R.string.rp, NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.totalIncome))
+
+                val expenseTextView = view.findViewById<TextView>(R.id.expense_home_value)
+                expenseTextView.text = getString(R.string.rp, NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.totalExpense))
+            }
         }
 
         return view

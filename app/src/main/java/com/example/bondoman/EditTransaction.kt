@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -74,6 +76,23 @@ class EditTransaction : AppCompatActivity() {
             }
         })
 
+        autocompleteFragment.view?.findViewById<EditText>(com.google.android.libraries.places.R.id.places_autocomplete_search_input)?.addTextChangedListener(object:
+            TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                // Do nothing
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.isNullOrEmpty()) {
+                    selectedPlace = Place.builder().build()
+                }
+            }
+        })
+
         // Set corner radius for the input field
         autocompleteFragment.view?.setBackgroundResource(R.drawable.input_container)
 
@@ -92,7 +111,7 @@ class EditTransaction : AppCompatActivity() {
             currentTransaction = transactionDAO.getTransaction(transactionId)
             binding.apply {
                 title.setText(currentTransaction.title)
-                amount.setText(NumberFormat.getNumberInstance(Locale("in", "ID")).format(currentTransaction.amount))
+                amount.setText(currentTransaction.amount.toString())
                 category.setSelection(if (currentTransaction.category == "Income") 0 else 1)
                 autocompleteFragment.setText(currentTransaction.location.name)
 
@@ -106,6 +125,17 @@ class EditTransaction : AppCompatActivity() {
                 selectedPlace = place
             }
         }
+
+        saveButton.setOnClickListener {
+            if (validateInputs()) {
+                onSaveButtonClicked()
+                Toast.makeText(this, "Successfully created transaction", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -130,7 +160,7 @@ class EditTransaction : AppCompatActivity() {
             amount = amount,
             category = category,
             location = selectedPlace,
-            createdAt = Timestamp(System.currentTimeMillis())
+            createdAt = currentTransaction.createdAt
         )
 
         // Insert the transaction into the database
@@ -143,5 +173,15 @@ class EditTransaction : AppCompatActivity() {
                 transactionDAO.updateTransaction(transaction)
             }
         }
+    }
+
+    private fun validateInputs(): Boolean {
+        val titleEditText = findViewById<EditText>(R.id.title)
+        val amountEditText = findViewById<EditText>(R.id.amount)
+
+        val title = titleEditText.text.toString().trim()
+        val amountText = amountEditText.text.toString().trim()
+
+        return title.isNotEmpty() && amountText.isNotEmpty() && amountText != "0" && !selectedPlace.name.isNullOrEmpty()
     }
 }
