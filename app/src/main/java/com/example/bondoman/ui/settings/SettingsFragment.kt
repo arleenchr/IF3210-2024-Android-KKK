@@ -65,7 +65,7 @@ class SettingsFragment : Fragment() {
             // Create a header row
             val header = sheet.createRow(0)
             header.createCell(0).setCellValue("Title")
-            header.createCell(1).setCellValue("Amount")
+            header.createCell(1).setCellValue("Amount (Rupiah)")
             header.createCell(2).setCellValue("Category")
             header.createCell(3).setCellValue("Location")
             header.createCell(4).setCellValue("Created At")
