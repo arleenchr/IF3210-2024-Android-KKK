@@ -5,12 +5,9 @@ import android.content.Context
 import android.content.Intent
 import com.example.bondoman.service.ApiClient
 import com.example.bondoman.ui.login.LoginActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
-import retrofit2.await
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.

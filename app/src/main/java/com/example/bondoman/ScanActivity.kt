@@ -2,6 +2,7 @@ package com.example.bondoman
 
 import android.Manifest
 import android.content.ContentValues
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -11,7 +12,17 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.bondoman.data.Result
 import com.example.bondoman.databinding.ActivityScanBinding
+import com.example.bondoman.repository.ScanRepository
+import com.example.bondoman.service.RetrofitClient
+import com.example.bondoman.ui.login.LoggedInUserView
+import com.example.bondoman.ui.login.LoginResult
+import kotlinx.coroutines.launch
+import java.sql.Date
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class ScanActivity : AppCompatActivity() {
 
@@ -66,9 +77,32 @@ class ScanActivity : AppCompatActivity() {
     private fun setupViewAfterPhotoTaken() {
         binding = ActivityScanBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+
+//        .launch {
+//            val result = ScanRepository.scan
+//
+//            if (result is Result.Success) {
+//                val editor: SharedPreferences.Editor = RetrofitClient.sharedPreferences.edit()
+//                editor.putString("username", username)
+//                editor.putString("token", result.data)
+//                editor.apply()
+//                _loginResult.value = LoginResult(success = LoggedInUserView(displayName = username))
+//            } else if (result is Result.Error) {
+//                val errorMessage = result.exception.message ?: "Unknown error"
+//                _loginResult.value = LoginResult(error = R.string.login_failed)
+//            }
+//        }
+//
+//        binding?.apply {
+//            amount.text = getString(R.string.rp, NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.amount))
+//            category.text = transaction.category
+//            date.text = convertTimestampToDate(transaction.createdAt.time)
+//            title.text = transaction.title
+//            locationGmaps.text = transaction.location.address
+//            time.text = convertTimestampToTime(transaction.createdAt.time)
+//            total.text = getString(R.string.rp, NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.amount))
+//        }
         setupView()
-        // Display the captured image
-        binding?.imageViewPhoto?.setImageURI(currentPhotoUri)
     }
 
     private fun setupView() {
@@ -90,5 +124,12 @@ class ScanActivity : AppCompatActivity() {
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
         }
         return contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)!!
+    }
+
+    fun convertTimestampToDate(timestamp: Long): String {
+        val date = Date(timestamp)
+        val timeFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+
+        return timeFormat.format(date)
     }
 }
