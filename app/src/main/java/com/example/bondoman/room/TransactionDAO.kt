@@ -12,6 +12,9 @@ interface TransactionDAO {
     @Query("SELECT * FROM `transaction` ORDER BY createdAt DESC")
     fun getAllTransaction(): LiveData<List<TransactionEntity>>
 
+    @Query("SELECT * FROM `transaction` ORDER BY createdAt DESC")
+    fun getAllTransactionsDirect(): List<TransactionEntity>
+
     @Query("SELECT * FROM `transaction` ORDER BY createdAt DESC LIMIT 3")
     fun getTopTransaction(): LiveData<List<TransactionEntity>>
 

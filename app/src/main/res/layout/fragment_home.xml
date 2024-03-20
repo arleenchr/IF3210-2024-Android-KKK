@@ -207,7 +207,7 @@
                 app:iconSize="14dp"
                 app:iconTint="@color/green_500"
                 app:iconGravity="textEnd"
-                app:backgroundTint="#213524"
+                app:backgroundTint="#192718"
                 app:strokeColor="#14532D"
                 app:strokeWidth="1dp"
                 app:cornerRadius="16dp"

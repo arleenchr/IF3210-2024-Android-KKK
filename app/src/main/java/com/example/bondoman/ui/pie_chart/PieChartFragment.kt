@@ -1,23 +1,15 @@
 package com.example.bondoman.ui.pie_chart
 
-import android.content.Intent
 import com.example.bondoman.R
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import com.example.bondoman.EditTransaction
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
 import com.github.mikephil.charting.animation.Easing
@@ -27,7 +19,6 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.github.mikephil.charting.utils.ColorTemplate
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
