@@ -10,8 +10,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
+import com.example.bondoman.ui.login.LoginViewModel
+import com.example.bondoman.ui.login.LoginViewModelFactory
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
@@ -27,6 +31,7 @@ import java.util.Locale
 class PieChartFragment() : Fragment(), OnChartValueSelectedListener {
     private var chart: PieChart? = null
     private lateinit var transactionDAO: TransactionDAO
+    private lateinit var chartViewModel: PieChartViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,11 +39,25 @@ class PieChartFragment() : Fragment(), OnChartValueSelectedListener {
     ): View? {
         // Inflate the layout for this fragment
         transactionDAO = TransactionDatabase.getDatabase(requireContext()).transactionDAO
+        chartViewModel = ViewModelProvider(this, PieChartViewModelFactory(TransactionDatabase.getDatabase(requireContext()).transactionDAO)).get(PieChartViewModel::class.java)
+
         return inflater.inflate(R.layout.fragment_analytics, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         chart = view.findViewById(R.id.pieChart)
+
+        chartViewModel.calculateMonthlyGrowth("Income").observe(viewLifecycleOwner) { growth ->
+            val growthString = String.format(Locale.getDefault(), "%.2f%%", growth)
+            val incomeIndicator = view.findViewById<TextView>(R.id.tvIncomeIndicator)
+            incomeIndicator?.text = growthString + " from last month"
+        }
+
+        chartViewModel.calculateMonthlyGrowth("Expense").observe(viewLifecycleOwner) { growth ->
+            val growthString = String.format(Locale.getDefault(), "%.2f%%", growth)
+            val expenseIndicator = view.findViewById<TextView>(R.id.tvExpenseIndicator)
+            expenseIndicator?.text = growthString + " from last month"
+        }
 
         setupChart()
     }
