@@ -47,20 +47,36 @@ class PieChartFragment() : Fragment(), OnChartValueSelectedListener {
         super.onViewCreated(view, savedInstanceState)
         chart = view.findViewById(R.id.pieChart)
 
+        setupObservers()
+        setupChart()
+    }
+
+    private fun setupObservers() {
+        val incomeIndicator = view?.findViewById<TextView>(R.id.tvIncomeIndicator)
+        val expenseIndicator = view?.findViewById<TextView>(R.id.tvExpenseIndicator)
+
+        chartViewModel.hadIncomeTransactionsLastMonth().observe(viewLifecycleOwner) { hadIncome ->
+            incomeIndicator?.visibility = if (hadIncome) View.VISIBLE else View.GONE
+        }
+
+        chartViewModel.hadExpenseTransactionsLastMonth().observe(viewLifecycleOwner) { hadExpense ->
+            expenseIndicator?.visibility = if (hadExpense) View.VISIBLE else View.GONE
+        }
+
         chartViewModel.calculateMonthlyGrowth("Income").observe(viewLifecycleOwner) { growth ->
-            val growthString = String.format(Locale.getDefault(), "%.2f%%", growth)
-            val incomeIndicator = view.findViewById<TextView>(R.id.tvIncomeIndicator)
-            incomeIndicator?.text = growthString + " from last month"
+            val growthString = formatGrowth(growth)
+            incomeIndicator?.text = "$growthString from last month"
         }
 
         chartViewModel.calculateMonthlyGrowth("Expense").observe(viewLifecycleOwner) { growth ->
-            val growthString = String.format(Locale.getDefault(), "%.2f%%", growth)
-            val expenseIndicator = view.findViewById<TextView>(R.id.tvExpenseIndicator)
-            expenseIndicator?.text = growthString + " from last month"
+            val growthString = formatGrowth(growth)
+            expenseIndicator?.text = "$growthString from last month"
         }
-
-        setupChart()
     }
+
+    private fun formatGrowth(growth: Double): String =
+        String.format(Locale.getDefault(), "%.2f%%", growth)
+
 
     private fun setupChart() {
         chart?.apply {

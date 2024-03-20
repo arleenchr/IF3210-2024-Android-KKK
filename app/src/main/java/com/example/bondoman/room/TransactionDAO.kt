@@ -63,6 +63,17 @@ interface TransactionDAO {
 """)
     fun calculateMonthlyGrowth(category: String): LiveData<Double>
 
+    @Query("""
+    SELECT EXISTS(
+        SELECT 1 FROM `transaction`
+        WHERE strftime('%Y-%m', createdAt / 1000, 'unixepoch', 'localtime') = 
+              strftime('%Y-%m', 'now', '-1 month', 'localtime') 
+        AND category = :category
+    )
+""")
+    fun hadTransactionsLastMonth(category: String): LiveData<Int>
+
+
     @Update
     fun updateTransaction(transaction: TransactionEntity)
 
