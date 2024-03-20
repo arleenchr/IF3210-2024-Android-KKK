@@ -1,7 +1,6 @@
 package com.example.bondoman.ui.transaction
 
 import android.content.Intent
-import android.location.Location
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,16 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.AddTransaction
 import com.example.bondoman.R
-import com.example.bondoman.ViewTransaction
-import com.example.bondoman.models.Transaction
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
 import com.example.bondoman.room.TransactionEntity
 import com.example.bondoman.ui.adapters.TransactionAdapter
 import com.example.bondoman.utils.VerticalSpaceItemDecoration
-import com.google.android.libraries.places.api.model.Place
+import com.example.bondoman.ui.list_items.TransactionListItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -67,8 +66,9 @@ class TransactionFragment : Fragment() {
         val transactionObserver = Observer<List<TransactionEntity>> { transactions ->
             if (transactions != null) {
                 recyclerView.apply {
+                    val items = prepareTransactionListItems(transactions)
                     layoutManager = LinearLayoutManager(context)
-                    adapter = TransactionAdapter(transactions)
+                    adapter = TransactionAdapter(items)
                 }
             }
         }
@@ -84,6 +84,44 @@ class TransactionFragment : Fragment() {
         }
 
         return view
+    }
+
+
+    fun formatDate(dateString: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd MMMM, yyyy", Locale.getDefault())
+
+        val date = inputFormat.parse(dateString)
+        val calendarDate = Calendar.getInstance().apply { time = date }
+
+        val today = Calendar.getInstance()
+        val yesterday = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) }
+
+        return when {
+            // Check if the dates are the same ignoring the time
+            calendarDate.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+                    calendarDate.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR) -> "Today"
+
+            calendarDate.get(Calendar.YEAR) == yesterday.get(Calendar.YEAR) &&
+                    calendarDate.get(Calendar.DAY_OF_YEAR) == yesterday.get(Calendar.DAY_OF_YEAR) -> "Yesterday"
+
+            else -> outputFormat.format(date)
+        }
+    }
+
+    fun prepareTransactionListItems(transactions: List<TransactionEntity>): List<TransactionListItem> {
+        val items = mutableListOf<TransactionListItem>()
+        var currentDate = ""
+        transactions.forEach { transaction ->
+            val date = transaction.createdAt
+            val dateStr = date.toString().split(" ")[0]
+            if (dateStr != currentDate) {
+                currentDate = dateStr
+                items.add(TransactionListItem.DateHeader(formatDate(dateStr)))
+            }
+            items.add(TransactionListItem.TransactionItem(transaction))
+        }
+        return items
     }
 
     companion object {

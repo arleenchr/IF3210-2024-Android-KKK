@@ -16,6 +16,7 @@ import com.example.bondoman.models.Transaction
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
 import com.example.bondoman.room.TransactionEntity
+import com.example.bondoman.ui.adapters.RecentTransactionAdapter
 import com.example.bondoman.ui.adapters.TransactionAdapter
 import com.example.bondoman.ui.transaction.TransactionFragment
 import com.google.android.libraries.places.api.model.Place
@@ -72,7 +73,7 @@ class HomeFragment : Fragment() {
             if (transactions != null) {
                 recyclerView.apply {
                     layoutManager = LinearLayoutManager(context)
-                    adapter = TransactionAdapter(transactions)
+                    adapter = RecentTransactionAdapter(transactions)
                 }
             }
         }
