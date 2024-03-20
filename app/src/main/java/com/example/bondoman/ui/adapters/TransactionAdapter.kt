@@ -54,6 +54,7 @@ class TransactionAdapter(private val transactions: List<TransactionEntity>) : Re
         if (transaction.category == "Income") {
             holder.tvAmount.setTextColor(holder.tvAmount.context.getColor(R.color.green_500))
         } else {
+            holder.tvAmount.text = "-${holder.tvAmount.text}"
             holder.tvAmount.setTextColor(holder.tvAmount.context.getColor(R.color.red_500))
         }
 
