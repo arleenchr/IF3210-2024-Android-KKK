@@ -77,8 +77,8 @@
             />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
         android:backgroundTint="@color/green_900"
         android:id="@+id/fab"
         app:layout_anchor="@id/bottomAppBar"
@@ -88,7 +88,7 @@
 
     <include
         android:id="@+id/customFab"
-        android:layout_marginBottom="27.8dp"
+        android:layout_marginBottom="28dp"
         layout="@layout/custom_fab"
         app:layout_anchor="@id/bottomAppBar"
         app:layout_anchorGravity="center"
