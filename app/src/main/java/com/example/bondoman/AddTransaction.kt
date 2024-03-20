@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Geocoder
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -18,6 +19,7 @@ import com.example.bondoman.room.TransactionDatabase
 import com.example.bondoman.room.TransactionEntity
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.Place
@@ -132,10 +134,9 @@ class AddTransaction : AppCompatActivity() {
             return
         }
 
-        // Use fused location provider client to get the last known location
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                // Check if location is not null and call the callback function
+        // Use fused location provider client to get the current location
+        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null)
+            .addOnSuccessListener { location: Location? ->
                 location?.let {
                     callback.invoke(LatLng(it.latitude, it.longitude))
                 }
