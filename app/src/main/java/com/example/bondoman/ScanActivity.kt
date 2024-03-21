@@ -40,7 +40,7 @@ class ScanActivity : AppCompatActivity() {
 
     private var binding: ActivityScanBinding? = null
     private lateinit var takePictureLauncher: ActivityResultLauncher<Uri>
-    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
     private var currentPhotoUri: Uri? = null
     private lateinit var transaction: Transaction
     private lateinit var transactionDAO: TransactionDAO
@@ -49,8 +49,10 @@ class ScanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Initialize the permission request launcher
-        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
+        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val allGranted = permissions.all { it.value }
+
+            if (allGranted) {
                 launchCamera()
             } else {
                 Toast.makeText(this, "Camera permission is required to use the camera", Toast.LENGTH_SHORT).show()
@@ -93,8 +95,7 @@ class ScanActivity : AppCompatActivity() {
         }
 
         if (permissionsToRequest.isNotEmpty()) {
-            val permissionString = permissionsToRequest.joinToString(",")
-            requestPermissionLauncher.launch(permissionString)
+            requestPermissionLauncher.launch(permissionsToRequest.toTypedArray())
         } else {
             // All permissions are granted, proceed with launching the camera
             launchCamera()
