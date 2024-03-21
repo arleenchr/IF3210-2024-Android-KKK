@@ -2,7 +2,6 @@ package com.example.bondoman
 
 import android.Manifest
 import android.content.ContentValues
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -12,15 +11,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.example.bondoman.data.Result
 import com.example.bondoman.databinding.ActivityScanBinding
-import com.example.bondoman.repository.ScanRepository
-import com.example.bondoman.service.RetrofitClient
-import com.example.bondoman.ui.login.LoggedInUserView
-import com.example.bondoman.ui.login.LoginResult
-import kotlinx.coroutines.launch
 import java.sql.Date
-import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
 

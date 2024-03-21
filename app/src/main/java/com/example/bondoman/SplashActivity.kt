@@ -43,7 +43,7 @@ class SplashActivity : AppCompatActivity() {
                 val intent = Intent(this, IntroActivity::class.java)
                 startActivity(intent)
                 finish()
-            }, 3000)
+            }, 1000)
         } else {
             GlobalScope.launch(Dispatchers.Main) {
                 if (isTokenValid()) {
@@ -51,13 +51,13 @@ class SplashActivity : AppCompatActivity() {
                         val intent = Intent(this@SplashActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
-                    }, 3000)
+                    }, 1000)
                 } else {
                     Handler(Looper.getMainLooper()).postDelayed({
                         val intent = Intent(this@SplashActivity, LoginActivity::class.java)
                         startActivity(intent)
                         finish()
-                    }, 3000)
+                    }, 1000)
                 }
             }
         }
