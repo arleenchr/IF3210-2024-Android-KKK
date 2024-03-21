@@ -2,8 +2,8 @@ package com.example.bondoman
 
 import android.Manifest
 import android.content.ContentValues
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -12,17 +12,29 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
+import androidx.loader.content.CursorLoader
 import com.example.bondoman.data.Result
+import com.example.bondoman.data.ScanDataSource
 import com.example.bondoman.databinding.ActivityScanBinding
+import com.example.bondoman.models.ScanResponse
+import com.example.bondoman.models.Transaction
 import com.example.bondoman.repository.ScanRepository
-import com.example.bondoman.service.RetrofitClient
-import com.example.bondoman.ui.login.LoggedInUserView
-import com.example.bondoman.ui.login.LoginResult
+import com.example.bondoman.room.TransactionDAO
+import com.example.bondoman.room.TransactionDatabase
+import com.example.bondoman.room.TransactionEntity
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.model.Place
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.sql.Date
+import java.sql.Timestamp
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
+
 
 class ScanActivity : AppCompatActivity() {
 
@@ -30,6 +42,8 @@ class ScanActivity : AppCompatActivity() {
     private lateinit var takePictureLauncher: ActivityResultLauncher<Uri>
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private var currentPhotoUri: Uri? = null
+    private lateinit var transaction: Transaction
+    private lateinit var transactionDAO: TransactionDAO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +66,8 @@ class ScanActivity : AppCompatActivity() {
                 finish()
             }
         }
+
+        transactionDAO = TransactionDatabase.getDatabase(applicationContext).transactionDAO
     }
 
     override fun onResume() {
@@ -78,30 +94,54 @@ class ScanActivity : AppCompatActivity() {
         binding = ActivityScanBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-//        .launch {
-//            val result = ScanRepository.scan
-//
-//            if (result is Result.Success) {
-//                val editor: SharedPreferences.Editor = RetrofitClient.sharedPreferences.edit()
-//                editor.putString("username", username)
-//                editor.putString("token", result.data)
-//                editor.apply()
-//                _loginResult.value = LoginResult(success = LoggedInUserView(displayName = username))
-//            } else if (result is Result.Error) {
-//                val errorMessage = result.exception.message ?: "Unknown error"
-//                _loginResult.value = LoginResult(error = R.string.login_failed)
-//            }
-//        }
-//
-//        binding?.apply {
-//            amount.text = getString(R.string.rp, NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.amount))
-//            category.text = transaction.category
-//            date.text = convertTimestampToDate(transaction.createdAt.time)
-//            title.text = transaction.title
-//            locationGmaps.text = transaction.location.address
-//            time.text = convertTimestampToTime(transaction.createdAt.time)
-//            total.text = getString(R.string.rp, NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.amount))
-//        }
+        var response: ScanResponse?
+
+        // Initialize createdAt with the current timestamp representing today
+        val todayTimestamp = Timestamp(System.currentTimeMillis())
+
+        lifecycleScope.launch {
+            val result = currentPhotoUri?.let { getPath(it)?.toUri()?.let { ScanRepository(ScanDataSource()).scan(it) } }
+
+            if (result is Result.Success) {
+                response = result.data
+                val items = response?.items?.items
+                val latitude = 37.7749
+                val longitude = -122.4194
+                val placeName = "Dummy Place"
+                val place = Place.builder()
+                    .setLatLng(LatLng(latitude, longitude))
+                    .setName(placeName)
+                    .setAddress(placeName)
+                    .build()
+                var amount = 0
+                items?.forEach { item ->
+                    amount += item.qty
+                }
+                transaction = Transaction("Scan", amount, "Expense", place, todayTimestamp)
+            } else if (result is Result.Error) {
+                val errorMessage = result.exception.message ?: "Unknown error"
+                Toast.makeText(this@ScanActivity, errorMessage, Toast.LENGTH_SHORT).show()
+            }
+
+            binding?.apply {
+                transaction.let { txn ->
+                    amount.text = getString(
+                        R.string.rp,
+                        NumberFormat.getNumberInstance(Locale("in", "ID")).format(txn.amount)
+                    )
+                    category.text = txn.category
+                    date.text = convertTimestampToDate(txn.createdAt.time)
+                    title.text = txn.title
+                    locationGmaps.text = txn.location.address
+                    time.text = convertTimestampToTime(txn.createdAt.time)
+                    total.text = getString(
+                        R.string.rp,
+                        NumberFormat.getNumberInstance(Locale("in", "ID")).format(txn.amount)
+                    )
+                }
+            }
+        }
+
         setupView()
     }
 
@@ -112,9 +152,31 @@ class ScanActivity : AppCompatActivity() {
         }
 
         binding?.buttonConfirm?.setOnClickListener {
-            // Handle confirm action
-            Toast.makeText(this, "Photo sent!", Toast.LENGTH_SHORT).show()
+            onSaveButtonClicked()
+            Toast.makeText(this, "Successfully created transaction", Toast.LENGTH_SHORT).show()
             finish()
+        }
+    }
+
+    private fun onSaveButtonClicked() {
+        // Create a new TransactionEntity object
+        val transaction = TransactionEntity(
+            title = transaction.title,
+            amount = transaction.amount,
+            category = transaction.category,
+            location = transaction.location,
+            createdAt = transaction.createdAt
+        )
+
+        // Insert the transaction into the database
+        insertTransaction(transaction)
+    }
+
+    private fun insertTransaction(transaction: TransactionEntity) {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                transactionDAO.insertTransaction(transaction)
+            }
         }
     }
 
@@ -126,10 +188,28 @@ class ScanActivity : AppCompatActivity() {
         return contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)!!
     }
 
-    fun convertTimestampToDate(timestamp: Long): String {
+    private fun convertTimestampToDate(timestamp: Long): String {
         val date = Date(timestamp)
         val timeFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
 
         return timeFormat.format(date)
+    }
+
+    private fun convertTimestampToTime(timestamp: Long): String {
+        val date = Date(timestamp)
+        val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+
+        return timeFormat.format(date)
+    }
+
+    private fun getPath(uri: Uri): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor: Cursor? = applicationContext.contentResolver.query(uri, projection, null, null, null)
+        cursor?.use {
+            val columnIndex: Int = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            it.moveToFirst()
+            return it.getString(columnIndex)
+        }
+        return null
     }
 }

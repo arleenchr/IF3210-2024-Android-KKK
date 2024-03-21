@@ -1,5 +1,6 @@
 package com.example.bondoman.data
 
+import android.net.Uri
 import com.example.bondoman.models.ScanResponse
 import com.example.bondoman.service.ApiClient
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -9,11 +10,18 @@ import java.io.File
 import java.lang.Exception
 
 class ScanDataSource {
-    suspend fun scan(file: File): Result<ScanResponse> {
+    suspend fun scan(photoUri: Uri): Result<ScanResponse> {
         return try {
+            // Convert Uri to File
+            val file = File(photoUri.path!!)
+
             val requestBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("file", file.name, file.asRequestBody("image/*".toMediaTypeOrNull()))
+                .addFormDataPart(
+                    "file",
+                    file.name,
+                    file.asRequestBody("image/*".toMediaTypeOrNull())
+                )
                 .build()
 
             val response = ApiClient.fileService.uploadBill(requestBody)
