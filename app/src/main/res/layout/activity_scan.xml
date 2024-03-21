@@ -181,22 +181,53 @@
         </LinearLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/buttonTakePhoto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/urbanist_medium"
-        android:background="@drawable/primary_button"
-        android:backgroundTint="#00000000"
-        android:text="Retake"/>
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/buttonConfirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:fontFamily="@font/urbanist_medium"
-        android:background="@drawable/primary_button"
-        android:backgroundTint="#FF14532D"
-        android:text="Confirm"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonTakePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/urbanist_medium"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="16dp"
+            app:background="@drawable/ripple_button"
+            app:backgroundTint="@color/gray_800"
+            android:textColor="@color/green_700"
+            app:strokeColor="#14532D"
+            app:strokeWidth="1dp"
+            app:cornerRadius="8dp"
+            app:elevation="0dp"
+            app:pressedTranslationZ="0dp"
+            android:textAllCaps="false"
+            android:text="Retake"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/urbanist_medium"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/white"
+            app:background="@drawable/ripple_button"
+            app:backgroundTint="#14532D"
+            app:strokeColor="#14532D"
+            app:strokeWidth="1dp"
+            app:cornerRadius="8dp"
+            app:elevation="0dp"
+            app:pressedTranslationZ="0dp"
+            android:textAllCaps="false"
+            android:text="Confirm"/>
+
+    </LinearLayout>
 </LinearLayout>

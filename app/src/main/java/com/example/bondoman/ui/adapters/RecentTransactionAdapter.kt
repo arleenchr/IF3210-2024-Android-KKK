@@ -68,8 +68,8 @@ class RecentTransactionAdapter(private val transactions: List<TransactionEntity>
 
         var locationName = transaction.location.name
         if (locationName != null) {
-            if (locationName.length > 25) {
-                locationName = locationName.substring(0, 25) + "..."
+            if (locationName.length > 15) {
+                locationName = locationName.substring(0, 15) + "..."
             }
         }
         holder.tvLocation.text = locationName
