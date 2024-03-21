@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
-import androidx.loader.content.CursorLoader
 import com.example.bondoman.data.Result
 import com.example.bondoman.data.ScanDataSource
 import com.example.bondoman.databinding.ActivityScanBinding
@@ -24,6 +23,7 @@ import com.example.bondoman.repository.ScanRepository
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
 import com.example.bondoman.room.TransactionEntity
+import com.google.android.filament.View
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.Place
 import kotlinx.coroutines.Dispatchers
@@ -73,15 +73,31 @@ class ScanActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (currentPhotoUri == null) { // Prevent relaunching if returning from background
-            requestCameraPermissionAndLaunch()
+            requestCameraAndStoragePermissions()
         }
     }
 
-    private fun requestCameraPermissionAndLaunch() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            launchCamera()
+    private fun requestCameraAndStoragePermissions() {
+        val permissionsToRequest = mutableListOf<String>()
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(Manifest.permission.CAMERA)
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+        if (permissionsToRequest.isNotEmpty()) {
+            val permissionString = permissionsToRequest.joinToString(",")
+            requestPermissionLauncher.launch(permissionString)
         } else {
-            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+            // All permissions are granted, proceed with launching the camera
+            launchCamera()
         }
     }
 
@@ -92,6 +108,8 @@ class ScanActivity : AppCompatActivity() {
 
     private fun setupViewAfterPhotoTaken() {
         binding = ActivityScanBinding.inflate(layoutInflater)
+
+        showLoading()
         setContentView(binding?.root)
 
         var response: ScanResponse?
@@ -140,9 +158,21 @@ class ScanActivity : AppCompatActivity() {
                     )
                 }
             }
+            setupView()
+            hideLoading()
         }
+    }
 
-        setupView()
+    private fun showLoading() {
+        // Show loading indicator, e.g., progress bar
+        binding?.mainDetail?.visibility = android.view.View.GONE
+        binding?.progressBar?.visibility = android.view.View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        // Hide loading indicator, e.g., progress bar
+        binding?.progressBar?.visibility = android.view.View.GONE
+        binding?.mainDetail?.visibility = android.view.View.VISIBLE
     }
 
     private fun setupView() {

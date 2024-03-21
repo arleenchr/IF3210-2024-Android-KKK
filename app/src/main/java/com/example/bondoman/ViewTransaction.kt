@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import com.example.bondoman.databinding.ActivityViewTransactionBinding
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
@@ -22,6 +23,7 @@ class ViewTransaction : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         supportActionBar?.title = "Transaction Details";
+        supportActionBar?.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.color.gray_800))
 
         transactionDAO = TransactionDatabase.getDatabase(applicationContext).transactionDAO
 
@@ -31,6 +33,11 @@ class ViewTransaction : AppCompatActivity() {
             transactionDAO.getLiveTransaction(transactionId).observe(this) { transaction ->
                 transaction?.let {
                     binding.apply {
+                        if (transaction.category == "Income") {
+                            transactionIcon.setImageResource(R.drawable.ic_income_item)
+                        } else {
+                            transactionIcon.setImageResource(R.drawable.ic_expense_item)
+                        }
                         amount.text = getString(R.string.rp, NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.amount))
                         category.text = transaction.category
                         date.text = convertTimestampToDate(transaction.createdAt.time)

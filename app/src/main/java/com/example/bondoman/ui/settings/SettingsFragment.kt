@@ -2,14 +2,18 @@ package com.example.bondoman.ui.settings
 
 import android.app.AlertDialog
 import android.content.ContentValues
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceFragmentCompat
@@ -19,11 +23,17 @@ import com.example.bondoman.databinding.FragmentSettingsBinding
 import com.example.bondoman.repository.LoginRepository
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
-import com.example.bondoman.service.RetrofitClient
+import com.example.bondoman.service.RetrofitClient.sharedPreferences
+import com.google.android.datatransport.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
@@ -41,7 +51,7 @@ class SettingsFragment : Fragment() {
         binding.logout.setOnClickListener {
             lifecycleScope.launch(Dispatchers.Main) {
                 val loginRepo = LoginRepository(LoginDataSource(), requireContext())
-                val editor: SharedPreferences.Editor = RetrofitClient.sharedPreferences.edit()
+                val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
                 // Remove token
                 editor.putString("token", "")
@@ -54,6 +64,11 @@ class SettingsFragment : Fragment() {
 
         binding.saveTransactionList.setOnClickListener {
             showFileFormatDialog()
+        }
+
+        binding.sendTransactionList.setOnClickListener {
+            val email = sharedPreferences.getString("username", "")
+            sendEmailWithWorkbookAttachment(email)
         }
 
         return binding.root
@@ -74,40 +89,60 @@ class SettingsFragment : Fragment() {
         dialog.show()
     }
 
+    private fun createExcelWorkbook(): XSSFWorkbook {
+        val workbook = XSSFWorkbook()
+        val sheet = workbook.createSheet("Transactions")
+
+        val header = sheet.createRow(0)
+        header.createCell(0).setCellValue("Title")
+        header.createCell(1).setCellValue("Amount (Rupiah)")
+        header.createCell(2).setCellValue("Category")
+        header.createCell(3).setCellValue("Location")
+        header.createCell(4).setCellValue("Created At")
+
+        val transactions = transactionDAO.getAllTransactionsDirect()
+
+        transactions.forEachIndexed { index, transaction ->
+            val row = sheet.createRow(index + 1)
+            row.createCell(0).setCellValue(transaction.title)
+            row.createCell(1).setCellValue(transaction.amount.toDouble())
+            row.createCell(2).setCellValue(transaction.category)
+            row.createCell(3).setCellValue(transaction.location.address)
+            row.createCell(4).setCellValue(transaction.createdAt.toString())
+        }
+
+        return workbook
+    }
+
+    private fun saveExcelWorkbookToFile(): Uri? {
+        val workbook = createExcelWorkbook()
+
+        try {
+            val fileName = "Transactions.xlsx"
+            val file = File(requireContext().cacheDir, fileName)
+            FileOutputStream(file).use { outputStream ->
+                workbook.write(outputStream)
+            }
+            workbook.close()
+
+            return FileProvider.getUriForFile(requireContext(), "${requireContext().packageName}.provider", file)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return null
+    }
 
     private fun saveTransactionsToExcel(format: String = "XLSX") {
         lifecycleScope.launch(Dispatchers.IO) {
-            val workbook = XSSFWorkbook()
-            val sheet = workbook.createSheet("Transactions")
+            // Create the excel file
+            val workbook = createExcelWorkbook()
 
-            // Create a header row
-            val header = sheet.createRow(0)
-            header.createCell(0).setCellValue("Title")
-            header.createCell(1).setCellValue("Amount (Rupiah)")
-            header.createCell(2).setCellValue("Category")
-            header.createCell(3).setCellValue("Location")
-            header.createCell(4).setCellValue("Created At")
-
-            // Fetch transactions from the database
-            val transactions = transactionDAO.getAllTransactionsDirect()
-
-            // Fill the sheet with transaction data
-            transactions.forEachIndexed { index, transaction ->
-                val row = sheet.createRow(index + 1)
-                row.createCell(0).setCellValue(transaction.title)
-                row.createCell(1).setCellValue(transaction.amount.toDouble())
-                row.createCell(2).setCellValue(transaction.category)
-                row.createCell(3).setCellValue(transaction.location.address)
-                row.createCell(4).setCellValue(transaction.createdAt.toString())
-            }
-
-            // Prepare ContentValues to create a new MediaStore entry
             val contentValues = ContentValues().apply {
                 if (format == "XLS") {
-                    put(MediaStore.MediaColumns.DISPLAY_NAME, "transactions.xls")
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, "transactions ${SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(System.currentTimeMillis())}.xls")
                     put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.ms-excel")
                 } else {
-                    put(MediaStore.MediaColumns.DISPLAY_NAME, "transactions.xlsx")
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, "transactions ${SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(System.currentTimeMillis())}.xlsx")
                     put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                 }
                 put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
@@ -118,7 +153,6 @@ class SettingsFragment : Fragment() {
             val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
 
             try {
-                // Use the obtained URI to write the workbook
                 uri?.let { obtainedUri ->
                     resolver.openOutputStream(obtainedUri).use { outputStream ->
                         workbook.write(outputStream)
@@ -134,6 +168,29 @@ class SettingsFragment : Fragment() {
                     Toast.makeText(requireContext(), "Failed to save transactions: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
+        }
+    }
+
+    private fun sendEmailWithWorkbookAttachment(userEmail: String?) {
+        val fileUri = saveExcelWorkbookToFile()
+
+        if (fileUri != null) {
+            val emailIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "vnd.android.cursor.dir/email"
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(userEmail ?: ""))
+                putExtra(Intent.EXTRA_SUBJECT, "Transaction List ${SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(System.currentTimeMillis())}")
+                putExtra(Intent.EXTRA_TEXT, "Here is your Bondoman transaction list.")
+                putExtra(Intent.EXTRA_STREAM, fileUri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+
+            if (emailIntent.resolveActivity(requireContext().packageManager) != null) {
+                startActivity(Intent.createChooser(emailIntent, "Select an email app"))
+            } else {
+                Toast.makeText(requireContext(), "No email app found.", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(requireContext(), "Error preparing the workbook for sending.", Toast.LENGTH_SHORT).show()
         }
     }
 }
