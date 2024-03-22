@@ -147,6 +147,7 @@ class ScanActivity : AppCompatActivity() {
                 items?.forEach { item ->
                     amount += item.qty
                 }
+                amount *= 1000
                 transaction = Transaction("Scan", amount, "Expense", place, todayTimestamp)
             } else if (result is Result.Error) {
                 val errorMessage = result.exception.message ?: "Unknown error"
