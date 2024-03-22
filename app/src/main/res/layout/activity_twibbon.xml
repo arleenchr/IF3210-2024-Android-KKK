@@ -31,12 +31,12 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/twibbonFab"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:backgroundTint="@color/green_900"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:backgroundTint="@color/green_700"
         android:contentDescription="@string/capture_twibbon"
         app:elevation="0dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
 
     <include
         android:id="@+id/captureFab"
-        layout="@layout/custom_fab"
+        layout="@layout/capture_twibbon"
         android:layout_width="84dp"
         android:layout_height="84dp"
         android:layout_marginBottom="40dp"
@@ -52,5 +52,61 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/twibbonActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginBottom="56dp"
+        android:layout_marginHorizontal="40dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonRetake"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/urbanist_medium"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:text="Retake"
+            android:textAllCaps="false"
+            android:textColor="@color/green_700"
+            app:background="@drawable/ripple_button"
+            app:backgroundTint="@color/gray_800"
+            app:cornerRadius="8dp"
+            app:elevation="0dp"
+            app:pressedTranslationZ="0dp"
+            app:strokeColor="#14532D"
+            app:strokeWidth="1dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/urbanist_medium"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:text="Save to Gallery"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:background="@drawable/ripple_button"
+            app:backgroundTint="#14532D"
+            app:cornerRadius="8dp"
+            app:elevation="0dp"
+            app:pressedTranslationZ="0dp"
+            app:strokeColor="#14532D"
+            app:strokeWidth="1dp" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
