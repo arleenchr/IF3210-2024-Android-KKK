@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
@@ -70,6 +71,9 @@ class ScanActivity : AppCompatActivity() {
             }
         }
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.color.gray_800))
+
         transactionDAO = TransactionDatabase.getDatabase(applicationContext).transactionDAO
     }
 
@@ -78,6 +82,11 @@ class ScanActivity : AppCompatActivity() {
         if (currentPhotoUri == null) { // Prevent relaunching if returning from background
             requestCameraAndStoragePermissions()
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     private fun requestCameraAndStoragePermissions() {
