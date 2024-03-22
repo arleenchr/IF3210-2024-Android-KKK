@@ -14,4 +14,5 @@
     <string name="login_failed">"Login failed"</string>
     <string name="scan_qr">Scan QR</string>
     <string name="rp">Rp%1$s</string>
+    <string name="capture_twibbon">Capture twibbon</string>
 </resources>

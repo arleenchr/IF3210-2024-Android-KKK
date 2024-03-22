@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,13 +17,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceFragmentCompat
 import com.example.bondoman.R
+import com.example.bondoman.TwibbonActivity
 import com.example.bondoman.data.LoginDataSource
 import com.example.bondoman.databinding.FragmentSettingsBinding
 import com.example.bondoman.repository.LoginRepository
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
 import com.example.bondoman.service.RetrofitClient.sharedPreferences
-import com.google.android.datatransport.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -69,6 +68,11 @@ class SettingsFragment : Fragment() {
         binding.sendTransactionList.setOnClickListener {
             val email = sharedPreferences.getString("username", "")
             sendEmailWithWorkbookAttachment(email)
+        }
+
+        binding.twibbon.setOnClickListener {
+            val intent = Intent(requireContext(), TwibbonActivity::class.java)
+            startActivity(intent)
         }
 
         return binding.root

@@ -92,6 +92,10 @@
             android:name=".ScanActivity"
             android:exported="true"
             android:label="Scan Receipts" />
+        <activity
+            android:name=".TwibbonActivity"
+            android:exported="true"
+            android:label="Twibbon" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
