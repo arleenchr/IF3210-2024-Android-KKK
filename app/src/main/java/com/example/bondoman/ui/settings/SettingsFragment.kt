@@ -33,11 +33,13 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlin.random.Random
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
     private lateinit var transactionDAO: TransactionDAO
     private var fileFormatOptions = arrayOf("XLS", "XLSX")
+    private val RANDOMIZE_TRANSACTIONS_ACTION = "com.example.bondoman.ACTION_RANDOMIZE_TRANSACTIONS"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,6 +75,13 @@ class SettingsFragment : Fragment() {
         binding.twibbon.setOnClickListener {
             val intent = Intent(requireContext(), TwibbonActivity::class.java)
             startActivity(intent)
+        }
+
+        binding.randomize.setOnClickListener {
+            val intent = Intent(RANDOMIZE_TRANSACTIONS_ACTION)
+            val randomValue = Random.nextInt(1000, 100001)
+            intent.putExtra("amount", randomValue)
+            requireContext().sendBroadcast(intent)
         }
 
         return binding.root
