@@ -49,6 +49,7 @@ dependencies {
     implementation("androidx.room:room-common:2.5.0")
     implementation("androidx.room:room-ktx:2.5.0")
     implementation("androidx.camera:camera-view:1.3.2")
+    implementation("com.google.ar.sceneform:filament-android:1.17.1")
     annotationProcessor("androidx.room:room-compiler:2.5.0")
     kapt("androidx.room:room-compiler:2.5.0")
     implementation("androidx.annotation:annotation:1.7.1")
