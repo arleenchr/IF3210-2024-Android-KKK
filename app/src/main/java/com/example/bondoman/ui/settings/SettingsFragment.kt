@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +23,6 @@ import com.example.bondoman.repository.LoginRepository
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
 import com.example.bondoman.service.RetrofitClient.sharedPreferences
-import com.google.android.datatransport.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,11 +32,13 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlin.random.Random
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
     private lateinit var transactionDAO: TransactionDAO
     private var fileFormatOptions = arrayOf("XLS", "XLSX")
+    private val RANDOMIZE_TRANSACTIONS_ACTION = "com.example.bondoman.ACTION_RANDOMIZE_TRANSACTIONS"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,6 +69,13 @@ class SettingsFragment : Fragment() {
         binding.sendTransactionList.setOnClickListener {
             val email = sharedPreferences.getString("username", "")
             sendEmailWithWorkbookAttachment(email)
+        }
+
+        binding.randomize.setOnClickListener {
+            val intent = Intent(RANDOMIZE_TRANSACTIONS_ACTION)
+            val randomValue = Random.nextInt(1000, 100001)
+            intent.putExtra("amount", randomValue)
+            requireContext().sendBroadcast(intent)
         }
 
         return binding.root

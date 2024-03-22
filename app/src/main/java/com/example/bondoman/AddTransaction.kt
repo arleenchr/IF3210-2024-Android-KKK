@@ -1,10 +1,15 @@
 package com.example.bondoman
 
 import android.Manifest
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Geocoder
 import android.location.Location
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -12,6 +17,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.bondoman.room.TransactionDAO
@@ -35,6 +41,20 @@ class AddTransaction : AppCompatActivity() {
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
     private lateinit var selectedPlace: Place
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private val randomizeTransactionsReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val RANDOMIZE_TRANSACTIONS_ACTION = "com.example.bondoman.ACTION_RANDOMIZE_TRANSACTIONS"
+            if (intent?.action == RANDOMIZE_TRANSACTIONS_ACTION) {
+                val addTransactionIntent = Intent(context, AddTransaction::class.java)
+                startActivity(addTransactionIntent)
+
+                val amount = intent.getIntExtra("amount", 0)
+                val amountEditText = findViewById<EditText>(R.id.amount)
+                amountEditText.setText(amount)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val categories = arrayOf("Income", "Expense")
@@ -231,5 +251,16 @@ class AddTransaction : AppCompatActivity() {
         val amountText = amountEditText.text.toString().trim()
 
         return title.isNotEmpty() && amountText.isNotEmpty() && amountText != "0" && !selectedPlace.name.isNullOrEmpty()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val filter = IntentFilter("com.example.bondoman.ACTION_RANDOMIZE_TRANSACTIONS")
+        registerReceiver(randomizeTransactionsReceiver, filter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(randomizeTransactionsReceiver)
     }
 }
