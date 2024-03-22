@@ -100,7 +100,7 @@ class TwibbonActivity : AppCompatActivity() {
                     val overlayDrawable = ContextCompat.getDrawable(baseContext, R.drawable.twibbon_overlay) as BitmapDrawable
                     val overlayBitmap = overlayDrawable.bitmap
 
-                    val combinedImage = combineImages(capturedBitmap, overlayBitmap)
+                    val combinedImage = combineImages(cropToSquare(capturedBitmap), overlayBitmap)
 
                     runOnUiThread {
                         // Display the combined image
@@ -114,6 +114,16 @@ class TwibbonActivity : AppCompatActivity() {
                     }
                 }
             })
+    }
+
+    private fun cropToSquare(bitmap: Bitmap): Bitmap {
+        val width = bitmap.width
+        val height = bitmap.height
+        val newWidth = if (width <= height) width else height
+        val newHeight = if (width <= height) width else height
+        val cropWidth = if (width <= height) 0 else (width - height) / 2
+        val cropHeight = if (width <= height) (height - width) / 2 else 0
+        return Bitmap.createBitmap(bitmap, cropWidth, cropHeight, newWidth, newHeight)
     }
 
     private fun combineImages(capturedBitmap: Bitmap, overlay: Bitmap): Bitmap {
