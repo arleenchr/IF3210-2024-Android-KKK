@@ -32,7 +32,7 @@ class TransactionAdapter(private val items: List<TransactionListItem>) : Recycle
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             TYPE_DATE_HEADER -> DateHeaderViewHolder(inflater.inflate(R.layout.item_date_header, parent, false))
-            else -> TransactionViewHolder(inflater.inflate(R.layout.item_transaction, parent, false), items.filterIsInstance<TransactionListItem.TransactionItem>().map { it.transaction })
+            else -> TransactionViewHolder(inflater.inflate(R.layout.item_transaction, parent, false))
         }
     }
 
@@ -50,7 +50,7 @@ class TransactionAdapter(private val items: List<TransactionListItem>) : Recycle
         }
     }
 
-    class TransactionViewHolder(itemView: View, transactions: List<TransactionEntity>) : RecyclerView.ViewHolder(itemView) {
+    class TransactionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var icon: ImageView = itemView.findViewById(R.id.transaction_icon)
         var tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
         var tvCategory: TextView = itemView.findViewById(R.id.tvCategory)
