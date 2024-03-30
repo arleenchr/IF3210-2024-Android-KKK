@@ -12,6 +12,8 @@ class NetworkUtils(private val context: Context) {
     private var connectivityManager: ConnectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+    private var networkCallback: ConnectivityManager.NetworkCallback? = null
+
     fun isOnline(): Boolean {
         val network = connectivityManager.activeNetwork ?: return false
         val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
@@ -23,15 +25,22 @@ class NetworkUtils(private val context: Context) {
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .build()
 
-        connectivityManager.registerNetworkCallback(networkRequest, object : ConnectivityManager.NetworkCallback() {
+        networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onLost(network: Network) {
                 super.onLost(network)
                 Toast.makeText(context, "Internet connection lost", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
+
+        connectivityManager.registerNetworkCallback(networkRequest,
+            networkCallback as ConnectivityManager.NetworkCallback
+        )
     }
 
     fun unregisterNetworkCallback() {
-        connectivityManager.unregisterNetworkCallback(ConnectivityManager.NetworkCallback())
+        if (networkCallback != null) {
+            connectivityManager.unregisterNetworkCallback(networkCallback!!)
+            networkCallback = null
+        }
     }
 }

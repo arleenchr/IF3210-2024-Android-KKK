@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,6 +26,7 @@ import com.example.bondoman.repository.ScanRepository
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
 import com.example.bondoman.room.TransactionEntity
+import com.example.bondoman.utils.NetworkUtils
 import com.google.android.filament.View
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.Place
@@ -50,31 +52,35 @@ class ScanActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize the permission request launcher
-        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val allGranted = permissions.all { it.value }
+        if (checkInternetConnection()) {
+            // Initialize the permission request launcher
+            requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+                val allGranted = permissions.all { it.value }
 
-            if (allGranted) {
-                launchCamera()
-            } else {
-                Toast.makeText(this, "Camera permission is required to use the camera", Toast.LENGTH_SHORT).show()
-                finish()
+                if (allGranted) {
+                    launchCamera()
+                } else {
+                    Toast.makeText(this, "Camera permission is required to use the camera", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
             }
-        }
 
-        // Initialize the take picture launcher
-        takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-            if (success) {
-                setupViewAfterPhotoTaken()
-            } else {
-                finish()
+            // Initialize the take picture launcher
+            takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+                if (success) {
+                    setupViewAfterPhotoTaken()
+                } else {
+                    finish()
+                }
             }
+
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.color.gray_800))
+
+            transactionDAO = TransactionDatabase.getDatabase(applicationContext).transactionDAO
+        } else {
+            finish()
         }
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.color.gray_800))
-
-        transactionDAO = TransactionDatabase.getDatabase(applicationContext).transactionDAO
     }
 
     override fun onResume() {
@@ -263,5 +269,15 @@ class ScanActivity : AppCompatActivity() {
             return it.getString(columnIndex)
         }
         return null
+    }
+
+    private fun checkInternetConnection(): Boolean {
+        val networkUtils = NetworkUtils(this)
+        return if (networkUtils.isOnline()) {
+            true
+        } else {
+            Toast.makeText(this, "No internet connection found.", Toast.LENGTH_SHORT).show()
+            false
+        }
     }
 }
