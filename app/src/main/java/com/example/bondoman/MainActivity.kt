@@ -13,16 +13,16 @@ import com.example.bondoman.ui.transaction.TransactionFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.content.Intent
-import android.view.Gravity
-import android.view.LayoutInflater
 import com.example.bondoman.service.RetrofitClient
 import com.example.bondoman.service.TokenCheckService
+import com.example.bondoman.utils.NetworkUtils
 import com.google.android.libraries.places.api.Places
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var bottomNav: BottomNavigationView
     private lateinit var fab: FloatingActionButton
+    private lateinit var networkUtils: NetworkUtils
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +42,10 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize Places SDK
         Places.initialize(applicationContext, getString(R.string.places_api_key))
+
+        // Add network sensing
+        networkUtils = NetworkUtils(this)
+        networkUtils.registerNetworkCallback()
 
         bottomNav = binding.bottomNav
         fab = binding.fab
@@ -89,5 +93,10 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, fragment)
             .commit()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        networkUtils.unregisterNetworkCallback()
     }
 }

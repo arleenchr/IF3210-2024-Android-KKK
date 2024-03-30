@@ -32,7 +32,9 @@ object RetrofitClient {
         }
 
         private fun getToken(): String {
-            return sharedPreferences.getString("token", "").toString()
+            val sharedPreferences1 = sharedPreferences
+            return (sharedPreferences1.getString("token", ""))
+                ?: ""
         }
     }
 }

@@ -248,4 +248,8 @@
 
         </LinearLayout>
     </LinearLayout>
+    <include
+        android:id="@+id/no_internet_found"
+        layout="@layout/no_internet_found"
+        android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

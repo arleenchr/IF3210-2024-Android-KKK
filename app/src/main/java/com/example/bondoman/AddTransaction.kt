@@ -42,19 +42,19 @@ class AddTransaction : AppCompatActivity() {
     private lateinit var selectedPlace: Place
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private val randomizeTransactionsReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            val RANDOMIZE_TRANSACTIONS_ACTION = "com.example.bondoman.ACTION_RANDOMIZE_TRANSACTIONS"
-            if (intent?.action == RANDOMIZE_TRANSACTIONS_ACTION) {
-                val addTransactionIntent = Intent(context, AddTransaction::class.java)
-                startActivity(addTransactionIntent)
-
-                val amount = intent.getIntExtra("amount", 0)
-                val amountEditText = findViewById<EditText>(R.id.amount)
-                amountEditText.setText(amount)
-            }
-        }
-    }
+//    private val randomizeTransactionsReceiver = object : BroadcastReceiver() {
+//        override fun onReceive(context: Context?, intent: Intent?) {
+//            val RANDOMIZE_TRANSACTIONS_ACTION = "com.example.bondoman.ACTION_RANDOMIZE_TRANSACTIONS"
+//            if (intent?.action == RANDOMIZE_TRANSACTIONS_ACTION) {
+//                val addTransactionIntent = Intent(context, AddTransaction::class.java)
+//                startActivity(addTransactionIntent)
+//
+//                val amount = intent.getIntExtra("amount", 0)
+//                val amountEditText = findViewById<EditText>(R.id.amount)
+//                amountEditText.setText(amount)
+//            }
+//        }
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val categories = arrayOf("Income", "Expense")
@@ -254,14 +254,14 @@ class AddTransaction : AppCompatActivity() {
         return title.isNotEmpty() && amountText.isNotEmpty() && amountText != "0" && !selectedPlace.name.isNullOrEmpty()
     }
 
-    override fun onResume() {
-        super.onResume()
-        val filter = IntentFilter("com.example.bondoman.ACTION_RANDOMIZE_TRANSACTIONS")
-        registerReceiver(randomizeTransactionsReceiver, filter)
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        val filter = IntentFilter("com.example.bondoman.ACTION_RANDOMIZE_TRANSACTIONS")
+//        registerReceiver(randomizeTransactionsReceiver, filter)
+//    }
 
-    override fun onPause() {
-        super.onPause()
-        unregisterReceiver(randomizeTransactionsReceiver)
-    }
+//    override fun onPause() {
+//        super.onPause()
+//        unregisterReceiver(randomizeTransactionsReceiver)
+//    }
 }

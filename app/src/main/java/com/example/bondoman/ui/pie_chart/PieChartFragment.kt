@@ -1,5 +1,6 @@
 package com.example.bondoman.ui.pie_chart
 
+import android.annotation.SuppressLint
 import com.example.bondoman.R
 import android.graphics.Color
 import android.os.Bundle
@@ -14,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
+import com.example.bondoman.service.RetrofitClient
 import com.example.bondoman.ui.login.LoginViewModel
 import com.example.bondoman.ui.login.LoginViewModelFactory
 import com.github.mikephil.charting.animation.Easing
@@ -47,13 +49,13 @@ class PieChartFragment() : Fragment(), OnChartValueSelectedListener {
         super.onViewCreated(view, savedInstanceState)
         chart = view.findViewById(R.id.pieChart)
 
-        setupObservers()
-        setupChart()
+        setupObservers(view)
+        setupChart(view)
     }
 
-    private fun setupObservers() {
-        val incomeIndicator = view?.findViewById<TextView>(R.id.tvIncomeIndicator)
-        val expenseIndicator = view?.findViewById<TextView>(R.id.tvExpenseIndicator)
+    private fun setupObservers(view: View) {
+        val incomeIndicator = view.findViewById<TextView>(R.id.tvIncomeIndicator)
+        val expenseIndicator = view.findViewById<TextView>(R.id.tvExpenseIndicator)
 
         chartViewModel.hadIncomeTransactionsLastMonth().observe(viewLifecycleOwner) { hadIncome ->
             incomeIndicator?.visibility = if (hadIncome) View.VISIBLE else View.GONE
@@ -64,13 +66,17 @@ class PieChartFragment() : Fragment(), OnChartValueSelectedListener {
         }
 
         chartViewModel.calculateMonthlyGrowth("Income").observe(viewLifecycleOwner) { growth ->
-            val growthString = formatGrowth(growth)
-            incomeIndicator?.text = "$growthString from last month"
+            if (growth != null) {
+                val growthString = formatGrowth(growth)
+                incomeIndicator?.text = "$growthString from last month"
+            }
         }
 
         chartViewModel.calculateMonthlyGrowth("Expense").observe(viewLifecycleOwner) { growth ->
-            val growthString = formatGrowth(growth)
-            expenseIndicator?.text = "$growthString from last month"
+            if (growth != null) {
+                val growthString = formatGrowth(growth)
+                expenseIndicator?.text = "$growthString from last month"
+            }
         }
     }
 
@@ -78,7 +84,7 @@ class PieChartFragment() : Fragment(), OnChartValueSelectedListener {
         String.format(Locale.getDefault(), "%.2f%%", growth)
 
 
-    private fun setupChart() {
+    private fun setupChart(view: View) {
         chart?.apply {
             setUsePercentValues(true)
             description.isEnabled = false
@@ -98,14 +104,14 @@ class PieChartFragment() : Fragment(), OnChartValueSelectedListener {
             setEntryLabelTextSize(12f)
         }
 
-        val dateTextView = view?.findViewById<TextView>(R.id.dateTextView)
+        val dateTextView = view.findViewById<TextView>(R.id.dateTextView)
 
         // Get current month and year
         val currentDate = Calendar.getInstance().time
         val dateFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
         val formattedDate = dateFormat.format(currentDate)
 
-        dateTextView?.text = formattedDate
+        dateTextView.text = formattedDate
 
         // Get data
         transactionDAO.getTransactionStats().observe(viewLifecycleOwner) { transaction ->
@@ -114,10 +120,10 @@ class PieChartFragment() : Fragment(), OnChartValueSelectedListener {
                 entries.add(PieEntry(transaction.totalIncome.toFloat(), 0))
                 entries.add(PieEntry(transaction.totalExpense.toFloat(), 1))
 
-                val incomeText = view?.findViewById<TextView>(R.id.incomeText)
+                val incomeText = view.findViewById<TextView>(R.id.incomeText)
                 incomeText?.text = getString(R.string.rp, NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.totalIncome))
 
-                val expenseText = view?.findViewById<TextView>(R.id.expenseText)
+                val expenseText = view.findViewById<TextView>(R.id.expenseText)
                 expenseText?.text = getString(R.string.rp, NumberFormat.getNumberInstance(Locale("in", "ID")).format(transaction.totalExpense))
 
                 val dataSet = com.github.mikephil.charting.data.PieDataSet(entries, "Results")
