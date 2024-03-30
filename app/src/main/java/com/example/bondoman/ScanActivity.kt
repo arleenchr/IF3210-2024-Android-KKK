@@ -2,21 +2,25 @@ package com.example.bondoman
 
 import android.Manifest
 import android.content.ContentValues
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
+import com.android.volley.BuildConfig
 import com.example.bondoman.data.Result
 import com.example.bondoman.data.ScanDataSource
 import com.example.bondoman.databinding.ActivityScanBinding
@@ -48,9 +52,17 @@ class ScanActivity : AppCompatActivity() {
     private var currentPhotoUri: Uri? = null
     private lateinit var transaction: Transaction
     private lateinit var transactionDAO: TransactionDAO
+    private lateinit var selectImageLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding = ActivityScanBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+
+        binding?.buttonScan?.setOnClickListener{
+            showImageSourceDialog()
+        }
 
         if (checkInternetConnection()) {
             // Initialize the permission request launcher
@@ -58,10 +70,23 @@ class ScanActivity : AppCompatActivity() {
                 val allGranted = permissions.all { it.value }
 
                 if (allGranted) {
-                    launchCamera()
+                    showImageSourceDialog()
                 } else {
                     Toast.makeText(this, "Camera permission is required to use the camera", Toast.LENGTH_SHORT).show()
                     finish()
+                }
+            }
+
+            selectImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val selectedImageUri: Uri? = result.data?.data
+                    if (selectedImageUri != null) {
+                        // Handle the selected image URI
+                        handleSelectedImage(selectedImageUri)
+                        setupViewAfterPhotoTaken()
+                    } else {
+                        Toast.makeText(this, "Failed to retrieve selected image", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
 
@@ -124,8 +149,32 @@ class ScanActivity : AppCompatActivity() {
             requestPermissionLauncher.launch(permissionsToRequest.toTypedArray())
         } else {
             // All permissions are granted, proceed with launching the camera
-            launchCamera()
+            showImageSourceDialog()
         }
+    }
+
+    private fun showImageSourceDialog() {
+        val options = arrayOf("Take Photo", "Select from File")
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Choose Image Source")
+        builder.setItems(options) { dialog, which ->
+            when (which) {
+                0 -> launchCamera() // Take Photo
+                1 -> launchImageSelection() // Select from File
+            }
+            dialog.dismiss()
+        }
+        builder.show()
+    }
+
+    private fun handleSelectedImage(imageUri: Uri) {
+        currentPhotoUri = imageUri
+    }
+
+    private fun launchImageSelection() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        selectImageLauncher.launch(intent)
     }
 
     private fun launchCamera() {
@@ -195,6 +244,7 @@ class ScanActivity : AppCompatActivity() {
         // Show loading indicator, e.g., progress bar
         binding?.mainDetail?.visibility = android.view.View.GONE
         binding?.progressBar?.visibility = android.view.View.VISIBLE
+        binding?.buttonScan?.visibility = android.view.View.GONE
     }
 
     private fun hideLoading() {
@@ -208,6 +258,10 @@ class ScanActivity : AppCompatActivity() {
             currentPhotoUri = createImageUri()
             takePictureLauncher.launch(currentPhotoUri)
         }
+
+//        binding?.buttonSelectImage?.setOnClickListener {
+//            launchImageSelection()
+//        }
 
         binding?.buttonConfirm?.setOnClickListener {
             onSaveButtonClicked()
@@ -280,4 +334,6 @@ class ScanActivity : AppCompatActivity() {
             false
         }
     }
+
+
 }
