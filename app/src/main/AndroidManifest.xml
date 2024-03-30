@@ -30,6 +30,15 @@
         android:theme="@style/Theme.Bondoman"
         android:requestLegacyExternalStorage="true"
         tools:targetApi="32">
+        <receiver
+            android:name=".service.TransactionReceiver"
+            android:exported="true"
+            android:permission="com.example.bondoman.BROADCAST_PERMISSION"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.example.bondoman.ACTION_RANDOMIZE_TRANSACTIONS" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".ViewTransaction"
             android:exported="false"
@@ -62,7 +71,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -71,7 +79,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -87,7 +94,6 @@
             android:theme="@style/Theme.Bondoman.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -1,6 +1,7 @@
 package com.example.bondoman.ui.settings
 
 import android.app.AlertDialog
+import android.content.ComponentName
 import android.content.ContentValues
 import android.content.Intent
 import android.content.SharedPreferences
@@ -24,6 +25,7 @@ import com.example.bondoman.repository.LoginRepository
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
 import com.example.bondoman.service.RetrofitClient.sharedPreferences
+import com.example.bondoman.service.TransactionReceiver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -78,9 +80,22 @@ class SettingsFragment : Fragment() {
         }
 
         binding.randomize.setOnClickListener {
-            val intent = Intent(RANDOMIZE_TRANSACTIONS_ACTION)
+            val intent = Intent(requireContext(), TransactionReceiver::class.java)
+            intent.action = RANDOMIZE_TRANSACTIONS_ACTION
             val randomValue = Random.nextInt(1000, 100001)
+            val randomCategory = Random.nextInt(2)
+            val transactionTitles = arrayOf(
+                "Groceries", "Dinner at Restaurant", "Gasoline", "Movie Tickets", "Coffee",
+                "Gym Membership", "Phone Bill", "Electricity Bill", "Internet Subscription", "Clothing Purchase",
+                "Taxi Fare", "Car Maintenance", "Haircut", "Medical Expenses", "Vacation Expenses",
+                "Book Purchase", "Music Concert Ticket", "Home Renovation", "Birthday Gift", "Laptop Purchase",
+                "Insurance Premium", "School Supplies", "Public Transportation", "Charity Donation", "Video Game Purchase"
+            )
+            val randomTitle = transactionTitles.random()
             intent.putExtra("amount", randomValue)
+            intent.putExtra("title", randomTitle)
+            intent.putExtra("category", randomCategory)
+
             requireContext().sendBroadcast(intent)
         }
 

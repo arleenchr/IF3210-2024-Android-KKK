@@ -24,6 +24,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fab: FloatingActionButton
     private lateinit var networkUtils: NetworkUtils
 
+    private lateinit var homeFragment: HomeFragment
+    private lateinit var transactionFragment: TransactionFragment
+    private lateinit var pieChartFragment: PieChartFragment
+    private lateinit var settingsFragment: SettingsFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
@@ -50,14 +55,19 @@ class MainActivity : AppCompatActivity() {
         bottomNav = binding.bottomNav
         fab = binding.fab
 
+        homeFragment = HomeFragment()
+        transactionFragment = TransactionFragment()
+        pieChartFragment = PieChartFragment()
+        settingsFragment = SettingsFragment()
+
         bottomNav.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.home -> {
-                    loadFragment(HomeFragment())
+                    loadFragment(homeFragment)
                     true
                 }
                 R.id.transaction -> {
-                    loadFragment(TransactionFragment())
+                    loadFragment(transactionFragment)
                     true
                 }
                 R.id.scan -> {
@@ -65,12 +75,12 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.pie_chart -> {
-                    loadFragment(PieChartFragment())
+                    loadFragment(pieChartFragment)
                     true
                 }
                 R.id.settings -> {
                     setTheme(R.style.SettingsStyle)
-                    loadFragment(SettingsFragment())
+                    loadFragment(settingsFragment)
                     true
                 }
                 else -> false

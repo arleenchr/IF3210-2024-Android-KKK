@@ -60,10 +60,6 @@ class ScanActivity : AppCompatActivity() {
         binding = ActivityScanBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        binding?.buttonScan?.setOnClickListener{
-            showImageSourceDialog()
-        }
-
         if (checkInternetConnection()) {
             // Initialize the permission request launcher
             requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -160,10 +156,13 @@ class ScanActivity : AppCompatActivity() {
         builder.setTitle("Choose Image Source")
         builder.setItems(options) { dialog, which ->
             when (which) {
-                0 -> launchCamera() // Take Photo
-                1 -> launchImageSelection() // Select from File
+                0 -> launchCamera()
+                1 -> launchImageSelection()
             }
             dialog.dismiss()
+        }
+        builder.setOnCancelListener {
+            finish()
         }
         builder.show()
     }
@@ -244,7 +243,6 @@ class ScanActivity : AppCompatActivity() {
         // Show loading indicator, e.g., progress bar
         binding?.mainDetail?.visibility = android.view.View.GONE
         binding?.progressBar?.visibility = android.view.View.VISIBLE
-        binding?.buttonScan?.visibility = android.view.View.GONE
     }
 
     private fun hideLoading() {

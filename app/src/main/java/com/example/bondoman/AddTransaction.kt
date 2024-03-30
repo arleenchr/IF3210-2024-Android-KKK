@@ -20,6 +20,7 @@ import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.bondoman.databinding.ActivityAddTransactionBinding
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
 import com.example.bondoman.room.TransactionEntity
@@ -42,26 +43,12 @@ class AddTransaction : AppCompatActivity() {
     private lateinit var selectedPlace: Place
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-//    private val randomizeTransactionsReceiver = object : BroadcastReceiver() {
-//        override fun onReceive(context: Context?, intent: Intent?) {
-//            val RANDOMIZE_TRANSACTIONS_ACTION = "com.example.bondoman.ACTION_RANDOMIZE_TRANSACTIONS"
-//            if (intent?.action == RANDOMIZE_TRANSACTIONS_ACTION) {
-//                val addTransactionIntent = Intent(context, AddTransaction::class.java)
-//                startActivity(addTransactionIntent)
-//
-//                val amount = intent.getIntExtra("amount", 0)
-//                val amountEditText = findViewById<EditText>(R.id.amount)
-//                amountEditText.setText(amount)
-//            }
-//        }
-//    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        val categories = arrayOf("Income", "Expense")
-
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_transaction)
+        val binding = ActivityAddTransactionBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        val categories = arrayOf("Income", "Expense")
         transactionDAO = TransactionDatabase.getDatabase(applicationContext).transactionDAO
         val spinner: Spinner = findViewById(R.id.category)
         val saveButton = findViewById<Button>(R.id.saveButton)
@@ -141,6 +128,14 @@ class AddTransaction : AppCompatActivity() {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             }
         }
+
+        // Retrieve the random_amount extra from the intent
+        val randomAmount = intent.getIntExtra("random_amount", 0)
+        val randomTitle = intent.getStringExtra("random_title")
+        val randomCategory = intent.getIntExtra("random_category", 0)
+        binding.amount.setText(randomAmount.toString())
+        binding.category.setSelection(randomCategory)
+        binding.title.setText(randomTitle.toString())
     }
 
     private fun fetchCurrentLocation(callback: (LatLng) -> Unit) {
@@ -253,15 +248,4 @@ class AddTransaction : AppCompatActivity() {
 
         return title.isNotEmpty() && amountText.isNotEmpty() && amountText != "0" && !selectedPlace.name.isNullOrEmpty()
     }
-
-//    override fun onResume() {
-//        super.onResume()
-//        val filter = IntentFilter("com.example.bondoman.ACTION_RANDOMIZE_TRANSACTIONS")
-//        registerReceiver(randomizeTransactionsReceiver, filter)
-//    }
-
-//    override fun onPause() {
-//        super.onPause()
-//        unregisterReceiver(randomizeTransactionsReceiver)
-//    }
 }
