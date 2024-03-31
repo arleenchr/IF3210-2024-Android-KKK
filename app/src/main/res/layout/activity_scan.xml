@@ -217,7 +217,7 @@
                 android:paddingHorizontal="16dp"
                 app:background="@drawable/ripple_button"
                 app:backgroundTint="@color/gray_800"
-                android:textColor="@color/green_700"
+                android:textColor="@color/green_500"
                 app:strokeColor="#14532D"
                 app:strokeWidth="1dp"
                 app:cornerRadius="8dp"

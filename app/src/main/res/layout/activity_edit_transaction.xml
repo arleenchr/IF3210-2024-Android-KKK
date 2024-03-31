@@ -39,6 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
+                android:textSize="16sp"
                 android:background="@drawable/roundstyle_xsm"
                 android:backgroundTint="@color/gray_container"
                 android:padding="10dp"
@@ -74,7 +75,7 @@
                     android:text="@string/rp_amount"
                     android:textColor="@color/gray_100"
                     android:fontFamily="@font/urbanist_regular"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:paddingStart="0dp"
                     android:paddingEnd="8dp"
                     android:layout_centerVertical="true"/>
@@ -86,6 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/prefixCurrency"
                     android:inputType="number"
+                    android:textSize="16sp"
                     android:background="@color/transparent"
                     android:autofillHints="0" />
             </RelativeLayout>
@@ -115,6 +117,7 @@
                 android:background="@drawable/roundstyle_xsm"
                 android:backgroundTint="@color/gray_container"
                 android:padding="10dp"
+                android:textSize="16sp"
                 android:popupBackground="@color/gray_container"
                 android:popupTheme="@style/SpinnerPopupStyle"/>
         </LinearLayout>
@@ -138,12 +141,13 @@
                     android:id="@+id/autocomplete_fragment_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="16sp"
                     android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                     tools:ignore="MissingConstraints,MissingDefaultResource" />
         </LinearLayout>
         <Button
             android:id="@+id/saveButton"
-            android:layout_width="72dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/save_btn"
             android:fontFamily="@font/urbanist_medium"

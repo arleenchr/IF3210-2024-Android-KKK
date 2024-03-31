@@ -76,13 +76,13 @@
             android:paddingVertical="12dp"
             android:text="@string/retake_btn"
             android:textAllCaps="false"
-            android:textColor="@color/green_700"
+            android:textColor="@color/green_500"
             app:background="@drawable/ripple_button"
             app:backgroundTint="@color/gray_800"
             app:cornerRadius="8dp"
             app:elevation="0dp"
             app:pressedTranslationZ="0dp"
-            app:strokeColor="#14532D"
+            app:strokeColor="@color/green_500"
             app:strokeWidth="1dp" />
 
         <View
