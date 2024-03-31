@@ -53,7 +53,7 @@ class EditTransaction : AppCompatActivity() {
         transactionDAO = TransactionDatabase.getDatabase(applicationContext).transactionDAO
         val spinner: Spinner = findViewById(R.id.category)
         val saveButton = findViewById<Button>(R.id.saveButton)
-        var adapter = ArrayAdapter(this, R.layout.transaction_category_item, categories)
+        val adapter = ArrayAdapter(this, R.layout.transaction_category_item, categories)
         adapter.setDropDownViewResource(R.layout.transaction_category_popup_item)
         spinner.adapter = adapter
 

@@ -133,9 +133,12 @@ class AddTransaction : AppCompatActivity() {
         val randomAmount = intent.getIntExtra("random_amount", 0)
         val randomTitle = intent.getStringExtra("random_title")
         val randomCategory = intent.getIntExtra("random_category", 0)
-        binding.amount.setText(randomAmount.toString())
-        binding.category.setSelection(randomCategory)
-        binding.title.setText(randomTitle.toString())
+
+        if (randomTitle != null) {
+            binding.amount.setText(randomAmount.toString())
+            binding.category.setSelection(randomCategory)
+            binding.title.setText(randomTitle.toString())
+        }
     }
 
     private fun fetchCurrentLocation(callback: (LatLng) -> Unit) {

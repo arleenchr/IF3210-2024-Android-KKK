@@ -46,10 +46,9 @@
                 android:id="@+id/intro_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/intro_title"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/urbanist_medium"
-                android:text="Sign in to Bondoman"
+                android:text="@string/sign_in_to_bondoman"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
@@ -102,7 +101,7 @@
                 android:enabled="false"
                 android:padding="10dp"
                 android:fontFamily="@font/urbanist"
-                android:text="Continue"
+                android:text="@string/continue_btn"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="20sp"
