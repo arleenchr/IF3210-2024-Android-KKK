@@ -215,6 +215,7 @@ class ScanActivity : AppCompatActivity() {
             } else if (result is Result.Error) {
                 val errorMessage = result.exception.message ?: "Unknown error"
                 Toast.makeText(this@ScanActivity, errorMessage, Toast.LENGTH_SHORT).show()
+                finish()
             }
 
             binding?.apply {
