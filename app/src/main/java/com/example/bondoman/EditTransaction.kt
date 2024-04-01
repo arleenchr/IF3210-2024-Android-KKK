@@ -129,7 +129,7 @@ class EditTransaction : AppCompatActivity() {
         saveButton.setOnClickListener {
             if (validateInputs()) {
                 onSaveButtonClicked()
-                Toast.makeText(this, "Successfully created transaction", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Successfully edited transaction", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()

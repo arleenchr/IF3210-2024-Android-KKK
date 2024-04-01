@@ -137,13 +137,14 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:layout_marginBottom="8dp"/>
-                <fragment
-                    android:id="@+id/autocomplete_fragment_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-                    tools:ignore="MissingConstraints,MissingDefaultResource" />
+            <fragment
+                android:id="@+id/autocomplete_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                app:cornerRadius="8dp"
+                android:textSize="16sp"
+                tools:ignore="MissingConstraints,MissingDefaultResource" />
         </LinearLayout>
         <Button
             android:id="@+id/saveButton"
