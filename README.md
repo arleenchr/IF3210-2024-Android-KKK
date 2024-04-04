@@ -31,7 +31,7 @@ Bondoman is compatible with Android devices running on API 29 (Android 10) up to
 
 ## Screenshots
 
-![login screenshot](screenshot/1_login.png)
+![<img src="screenshot/1_login.png" width="50"/>](screenshot/1_login.png)
 ![login with input screenshot](screenshot/2_login_input.png)
 ![home screenshot](screenshot/3_home.png)
 ![transaction list screenshot](screenshot/4_transaction_list.png)
@@ -60,6 +60,16 @@ Bondoman is compatible with Android devices running on API 29 (Android 10) up to
 
 
 ## Accessibility Testing
+Notes: Suggestions have been fixed and can be seen on [screenshot section](#screenshots)<br>
+Other suggestions contain suggestions that can not be fixed, such as suggestions for Google plugins and navigation bar<br>
+
+![home test](screenshot/accessibility_testing/2_home_see_all_button.png)
+![edit button test](screenshot/accessibility_testing/8_transaction_edit_button.png)
+![text field test](screenshot/accessibility_testing/9_transaction_text_field.png)
+![save button test](screenshot/accessibility_testing/12_transaction_save_button.png)
+![chart container test](screenshot/accessibility_testing/13_chart_container.png)
+![chart insight text test](screenshot/accessibility_testing/14_chart_insight_text.png)
+![twibbon retake button test](screenshot/accessibility_testing/16_twibbon_retake_button.png)
 
 
 
