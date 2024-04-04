@@ -143,9 +143,6 @@ class ScanActivity : AppCompatActivity() {
         // Request permissions if needed
         if (permissionsToRequest.isNotEmpty()) {
             requestPermissionLauncher.launch(permissionsToRequest.toTypedArray())
-        } else {
-            // All permissions are granted, proceed with launching the camera
-            showImageSourceDialog()
         }
     }
 
@@ -257,10 +254,6 @@ class ScanActivity : AppCompatActivity() {
             currentPhotoUri = createImageUri()
             takePictureLauncher.launch(currentPhotoUri)
         }
-
-//        binding?.buttonSelectImage?.setOnClickListener {
-//            launchImageSelection()
-//        }
 
         binding?.buttonConfirm?.setOnClickListener {
             onSaveButtonClicked()
