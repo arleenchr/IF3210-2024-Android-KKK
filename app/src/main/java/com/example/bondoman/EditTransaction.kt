@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.bondoman.databinding.ActivityAddTransactionBinding
@@ -59,6 +60,7 @@ class EditTransaction : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         supportActionBar?.title = "Edit Transaction";
+        supportActionBar?.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.color.gray_800))
 
         autocompleteFragment =
             supportFragmentManager.findFragmentById(R.id.autocomplete_fragment)
