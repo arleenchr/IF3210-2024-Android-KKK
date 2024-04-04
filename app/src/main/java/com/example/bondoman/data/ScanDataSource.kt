@@ -34,7 +34,7 @@ class ScanDataSource {
                     Result.Error(Exception("Empty response body"))
                 }
             } else {
-                Result.Error(Exception(response.message()))
+                Result.Error(Exception(response.body().toString()))
             }
         } catch (e: Exception) {
             e.printStackTrace()
