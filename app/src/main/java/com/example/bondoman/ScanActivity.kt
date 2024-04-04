@@ -203,37 +203,38 @@ class ScanActivity : AppCompatActivity() {
                     .setName(placeName)
                     .setAddress(placeName)
                     .build()
-                var amount = 0
+                var amountValue = 0
                 items?.forEach { item ->
-                    amount += item.qty
+                    amountValue += item.qty
                 }
-                amount *= 1000
-                transaction = Transaction("Scan", amount, "Expense", place, todayTimestamp)
+                amountValue *= 1000
+                transaction = Transaction("Scan", amountValue, "Expense", place, todayTimestamp)
+
+                binding?.apply {
+                    transaction.let { txn ->
+                        amount.text = getString(
+                            R.string.rp,
+                            NumberFormat.getNumberInstance(Locale("in", "ID")).format(txn.amount)
+                        )
+                        category.text = txn.category
+                        date.text = convertTimestampToDate(txn.createdAt.time)
+                        title.text = txn.title
+                        locationGmaps.text = txn.location.address
+                        time.text = convertTimestampToTime(txn.createdAt.time)
+                        total.text = getString(
+                            R.string.rp,
+                            NumberFormat.getNumberInstance(Locale("in", "ID")).format(txn.amount)
+                        )
+                    }
+                }
+                setupView()
+                hideLoading()
             } else if (result is Result.Error) {
                 val errorMessage = result.exception.message ?: "Unknown error"
                 Toast.makeText(this@ScanActivity, errorMessage, Toast.LENGTH_SHORT).show()
                 finish()
+                return@launch
             }
-
-            binding?.apply {
-                transaction.let { txn ->
-                    amount.text = getString(
-                        R.string.rp,
-                        NumberFormat.getNumberInstance(Locale("in", "ID")).format(txn.amount)
-                    )
-                    category.text = txn.category
-                    date.text = convertTimestampToDate(txn.createdAt.time)
-                    title.text = txn.title
-                    locationGmaps.text = txn.location.address
-                    time.text = convertTimestampToTime(txn.createdAt.time)
-                    total.text = getString(
-                        R.string.rp,
-                        NumberFormat.getNumberInstance(Locale("in", "ID")).format(txn.amount)
-                    )
-                }
-            }
-            setupView()
-            hideLoading()
         }
     }
 
