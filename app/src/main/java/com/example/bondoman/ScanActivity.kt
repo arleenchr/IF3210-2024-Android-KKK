@@ -65,9 +65,7 @@ class ScanActivity : AppCompatActivity() {
             requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
                 val allGranted = permissions.all { it.value }
 
-                if (allGranted) {
-                    showImageSourceDialog()
-                } else {
+                if (!allGranted) {
                     Toast.makeText(this, "Camera permission is required to use the camera", Toast.LENGTH_SHORT).show()
                     finish()
                 }
@@ -143,6 +141,8 @@ class ScanActivity : AppCompatActivity() {
         // Request permissions if needed
         if (permissionsToRequest.isNotEmpty()) {
             requestPermissionLauncher.launch(permissionsToRequest.toTypedArray())
+        } else {
+            showImageSourceDialog()
         }
     }
 
