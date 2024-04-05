@@ -11,6 +11,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.bondoman.service.ApiClient
 import com.example.bondoman.ui.login.LoginActivity
+import com.example.bondoman.utils.NetworkUtils
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -18,10 +19,15 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
+    private lateinit var networkUtils: NetworkUtils
+
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
+
+        networkUtils = NetworkUtils(this)
+        networkUtils.registerNetworkCallback()
 
         // Hide action bar
         supportActionBar?.hide()
@@ -40,13 +46,13 @@ class SplashActivity : AppCompatActivity() {
 
             // Throw to intro activity
             Handler(Looper.getMainLooper()).postDelayed({
-                val intent = Intent(this, IntroActivity::class.java)
+                val intent = Intent(this@SplashActivity, IntroActivity::class.java)
                 startActivity(intent)
                 finish()
             }, 1000)
         } else {
             GlobalScope.launch(Dispatchers.Main) {
-                if (isTokenValid()) {
+                if (networkUtils.isOnline() && isTokenValid()) {
                     Handler(Looper.getMainLooper()).postDelayed({
                         val intent = Intent(this@SplashActivity, MainActivity::class.java)
                         startActivity(intent)
@@ -85,5 +91,10 @@ class SplashActivity : AppCompatActivity() {
         }
 
         return false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        networkUtils.unregisterNetworkCallback()
     }
 }
