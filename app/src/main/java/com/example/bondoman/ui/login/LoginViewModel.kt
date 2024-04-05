@@ -7,16 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bondoman.BuildConfig.ENCRYPTION_KEY
-import com.example.bondoman.BuildConfig.INIT_VECTOR
 import com.example.bondoman.R
 import com.example.bondoman.data.Result
 import com.example.bondoman.repository.LoginRepository
 import android.util.Base64
-import com.example.bondoman.service.RetrofitClient
 import com.example.bondoman.service.RetrofitClient.sharedPreferences
 import kotlinx.coroutines.launch
 import javax.crypto.Cipher
-import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 

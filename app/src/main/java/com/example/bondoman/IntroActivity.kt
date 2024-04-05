@@ -1,11 +1,9 @@
 package com.example.bondoman
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.example.bondoman.service.RetrofitClient
 import com.example.bondoman.ui.login.LoginActivity
 
 class IntroActivity : AppCompatActivity() {

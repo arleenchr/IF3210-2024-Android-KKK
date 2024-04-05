@@ -8,7 +8,6 @@ import android.content.SharedPreferences
 import android.util.Base64
 import com.example.bondoman.BuildConfig
 import javax.crypto.Cipher
-import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 import javax.crypto.spec.IvParameterSpec
 

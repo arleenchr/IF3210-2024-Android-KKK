@@ -4,7 +4,6 @@ import android.net.Uri
 import com.example.bondoman.data.Result
 import com.example.bondoman.data.ScanDataSource
 import com.example.bondoman.models.ScanResponse
-import java.io.File
 
 class ScanRepository (val dataSource: ScanDataSource) {
     suspend fun scan(uri: Uri): Result<ScanResponse> {
