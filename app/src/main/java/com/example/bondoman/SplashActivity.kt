@@ -36,13 +36,14 @@ class SplashActivity : AppCompatActivity() {
 
         // Set shared preferences
         RetrofitClient.sharedPreferences = getSharedPreferences("identity", Context.MODE_PRIVATE)
-        val editor = RetrofitClient.sharedPreferences.edit()
-        editor.putString("init_vector", generateRandomIV())
-        editor.apply()
 
         // Check if new user or not
         val checkNew = RetrofitClient.sharedPreferences.getBoolean("new", true)
         if (checkNew) {
+            val editor = RetrofitClient.sharedPreferences.edit()
+            editor.putString("init_vector", generateRandomIV())
+            editor.apply()
+
             // Set old user
             editor.putBoolean("new", false)
             editor.apply()

@@ -252,8 +252,7 @@ class ScanActivity : AppCompatActivity() {
 
     private fun setupView() {
         binding?.buttonTakePhoto?.setOnClickListener {
-            currentPhotoUri = createImageUri()
-            takePictureLauncher.launch(currentPhotoUri)
+            showImageSourceDialog()
         }
 
         binding?.buttonConfirm?.setOnClickListener {
