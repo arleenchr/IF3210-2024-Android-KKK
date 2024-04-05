@@ -53,6 +53,7 @@ class AddTransaction : AppCompatActivity() {
         var adapter = ArrayAdapter(this, R.layout.transaction_category_item, categories)
         adapter.setDropDownViewResource(R.layout.transaction_category_popup_item)
         spinner.adapter = adapter
+        selectedPlace = Place.builder().build()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         supportActionBar?.title = "Add Transaction";
