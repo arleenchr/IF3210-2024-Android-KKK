@@ -1,4 +1,4 @@
-package com.example.bondoman
+package com.example.bondoman.ui.transaction
 
 import android.content.Intent
 import android.net.Uri
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import com.example.bondoman.R
 import com.example.bondoman.databinding.ActivityViewTransactionBinding
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
@@ -23,7 +24,9 @@ class ViewTransaction : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         supportActionBar?.title = "Transaction Details";
-        supportActionBar?.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.color.gray_800))
+        supportActionBar?.setBackgroundDrawable(AppCompatResources.getDrawable(this,
+            R.color.gray_800
+        ))
 
         transactionDAO = TransactionDatabase.getDatabase(applicationContext).transactionDAO
 

@@ -1,7 +1,6 @@
 package com.example.bondoman.ui.settings
 
 import android.app.AlertDialog
-import android.content.ComponentName
 import android.content.ContentValues
 import android.content.Intent
 import android.content.SharedPreferences
@@ -18,7 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceFragmentCompat
 import com.example.bondoman.R
-import com.example.bondoman.TwibbonActivity
+import com.example.bondoman.ui.twibbon.TwibbonActivity
 import com.example.bondoman.data.LoginDataSource
 import com.example.bondoman.databinding.FragmentSettingsBinding
 import com.example.bondoman.repository.LoginRepository

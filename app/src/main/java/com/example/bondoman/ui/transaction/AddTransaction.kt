@@ -1,15 +1,10 @@
-package com.example.bondoman
+package com.example.bondoman.ui.transaction
 
 import android.Manifest
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Geocoder
 import android.location.Location
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -20,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.bondoman.R
 import com.example.bondoman.databinding.ActivityAddTransactionBinding
 import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
@@ -58,7 +54,9 @@ class AddTransaction : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         supportActionBar?.title = "Add Transaction";
-        supportActionBar?.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.color.gray_800))
+        supportActionBar?.setBackgroundDrawable(AppCompatResources.getDrawable(this,
+            R.color.gray_800
+        ))
 
         // Initialize the fused location provider client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)

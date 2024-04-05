@@ -15,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.content.Intent
 import com.example.bondoman.service.RetrofitClient
 import com.example.bondoman.service.TokenCheckService
+import com.example.bondoman.ui.scan.ScanActivity
 import com.example.bondoman.utils.NetworkUtils
 import com.google.android.libraries.places.api.Places
 

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/gray_800"
     android:padding="20dp"
-    tools:context=".AddTransaction">
+    tools:context=".ui.transaction.AddTransaction">
 
     <LinearLayout
         android:layout_width="match_parent"

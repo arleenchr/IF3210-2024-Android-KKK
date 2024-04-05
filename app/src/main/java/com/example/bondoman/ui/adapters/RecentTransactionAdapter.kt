@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.R
-import com.example.bondoman.ViewTransaction
+import com.example.bondoman.ui.transaction.ViewTransaction
 import com.example.bondoman.room.TransactionEntity
 import java.text.NumberFormat
 import java.util.Locale

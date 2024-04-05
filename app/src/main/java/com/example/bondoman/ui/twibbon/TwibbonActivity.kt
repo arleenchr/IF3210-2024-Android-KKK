@@ -1,4 +1,4 @@
-package com.example.bondoman
+package com.example.bondoman.ui.twibbon
 
 import android.Manifest
 import android.content.ContentValues
@@ -23,6 +23,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.bondoman.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
@@ -40,7 +41,9 @@ class TwibbonActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
         supportActionBar?.title = "Twibbon";
-        supportActionBar?.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.color.gray_800))
+        supportActionBar?.setBackgroundDrawable(AppCompatResources.getDrawable(this,
+            R.color.gray_800
+        ))
 
         if (allPermissionsGranted()) {
             startCamera()
@@ -97,7 +100,9 @@ class TwibbonActivity : AppCompatActivity() {
                         decoder.isMutableRequired = true
                     }
 
-                    val overlayDrawable = ContextCompat.getDrawable(baseContext, R.drawable.twibbon_overlay) as BitmapDrawable
+                    val overlayDrawable = ContextCompat.getDrawable(baseContext,
+                        R.drawable.twibbon_overlay
+                    ) as BitmapDrawable
                     val overlayBitmap = overlayDrawable.bitmap
 
                     val combinedImage = combineImages(cropToSquare(capturedBitmap), overlayBitmap)

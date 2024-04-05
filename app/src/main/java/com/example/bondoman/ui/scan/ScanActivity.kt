@@ -1,4 +1,4 @@
-package com.example.bondoman
+package com.example.bondoman.ui.scan
 
 import android.Manifest
 import android.content.ContentValues
@@ -9,8 +9,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,7 +18,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
-import com.android.volley.BuildConfig
+import com.example.bondoman.R
 import com.example.bondoman.data.Result
 import com.example.bondoman.data.ScanDataSource
 import com.example.bondoman.databinding.ActivityScanBinding
@@ -31,7 +29,6 @@ import com.example.bondoman.room.TransactionDAO
 import com.example.bondoman.room.TransactionDatabase
 import com.example.bondoman.room.TransactionEntity
 import com.example.bondoman.utils.NetworkUtils
-import com.google.android.filament.View
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.Place
 import kotlinx.coroutines.Dispatchers
@@ -94,7 +91,9 @@ class ScanActivity : AppCompatActivity() {
             }
 
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.color.gray_800))
+            supportActionBar?.setBackgroundDrawable(AppCompatResources.getDrawable(this,
+                R.color.gray_800
+            ))
 
             transactionDAO = TransactionDatabase.getDatabase(applicationContext).transactionDAO
         } else {

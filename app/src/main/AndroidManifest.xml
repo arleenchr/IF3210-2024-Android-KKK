@@ -41,7 +41,7 @@
             </intent-filter>
         </receiver>
         <activity
-            android:name=".ViewTransaction"
+            android:name=".ui.transaction.ViewTransaction"
             android:exported="false"
             android:theme="@style/Theme.Bondoman.Main">
             <meta-data
@@ -49,7 +49,7 @@
                 android:value=".MainActivity"/>
         </activity>
         <activity
-            android:name=".AddTransaction"
+            android:name=".ui.transaction.AddTransaction"
             android:exported="false"
             android:theme="@style/Theme.Bondoman.Main">
             <meta-data
@@ -57,7 +57,7 @@
                 android:value=".MainActivity"/>
         </activity>
         <activity
-            android:name=".EditTransaction"
+            android:name=".ui.transaction.EditTransaction"
             android:exported="false"
             android:theme="@style/Theme.Bondoman.Main">
             <meta-data
@@ -91,11 +91,11 @@
             android:theme="@style/Theme.Bondoman.Main">
         </activity>
         <activity
-            android:name=".ScanActivity"
+            android:name=".ui.scan.ScanActivity"
             android:exported="true"
             android:label="Scan Receipts" />
         <activity
-            android:name=".TwibbonActivity"
+            android:name=".ui.twibbon.TwibbonActivity"
             android:exported="true"
             android:label="Twibbon" />
 
