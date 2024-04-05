@@ -18,7 +18,6 @@ object RetrofitClient {
 
     // Encryption key
     private const val ENCRYPTION_KEY = BuildConfig.ENCRYPTION_KEY
-    private const val INIT_VECTOR = BuildConfig.INIT_VECTOR
 
     private val httpClient = OkHttpClient.Builder().apply {
         addInterceptor(BearerTokenInterceptor())
