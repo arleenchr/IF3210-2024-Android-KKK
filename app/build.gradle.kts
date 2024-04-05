@@ -27,12 +27,10 @@ android {
             // Access API key
             buildConfigField("String", "API_KEY", "\"${apikeyProps.getProperty("API_KEY")}\"")
             buildConfigField("String", "ENCRYPTION_KEY", "\"${apikeyProps.getProperty("ENCRYPTION_KEY")}\"")
-            buildConfigField("String", "INIT_VECTOR", "\"${apikeyProps.getProperty("INIT_VECTOR")}\"")
         } else {
             // Set API key to empty string if apikey.properties doesn't exist
             buildConfigField("String", "API_KEY", "\"\"")
             buildConfigField("String", "ENCRYPTION_KEY", "\"\"")
-            buildConfigField("String", "INIT_VECTOR", "\"\"")
         }
     }
 

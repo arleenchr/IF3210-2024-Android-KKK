@@ -7,6 +7,8 @@ import android.location.Geocoder
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -74,6 +76,23 @@ class AddTransaction : AppCompatActivity() {
 
             override fun onPlaceSelected(place: Place) {
                 selectedPlace = place
+            }
+        })
+
+        autocompleteFragment.view?.findViewById<EditText>(com.google.android.libraries.places.R.id.places_autocomplete_search_input)?.addTextChangedListener(object:
+            TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                // Do nothing
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.isNullOrEmpty()) {
+                    selectedPlace = Place.builder().build()
+                }
             }
         })
 
@@ -262,7 +281,7 @@ class AddTransaction : AppCompatActivity() {
     private fun validateAmount(amountText: String): Boolean {
         val amount = amountText.toIntOrNull() ?: 0
         val minAmount = 1
-        val maxAmount = 1000000
+        val maxAmount = 100000000000
         return amount in minAmount..maxAmount
     }
 
