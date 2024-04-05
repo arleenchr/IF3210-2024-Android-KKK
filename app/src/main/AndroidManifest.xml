@@ -29,6 +29,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Bondoman"
         android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="false"
         tools:targetApi="32">
         <receiver
             android:name=".service.TransactionReceiver"

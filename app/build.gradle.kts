@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -11,12 +13,27 @@ android {
     defaultConfig {
         applicationId = "com.example.bondoman"
         minSdk = 29
-        //noinspection ExpiredTargetSdkVersion
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Load API key from apikey.properties file
+        val apikeyPropsFile = rootProject.file("apikey.properties")
+        if (apikeyPropsFile.exists()) {
+            val apikeyProps = Properties()
+            apikeyProps.load(apikeyPropsFile.inputStream())
+            // Access API key
+            buildConfigField("String", "API_KEY", "\"${apikeyProps.getProperty("API_KEY")}\"")
+            buildConfigField("String", "ENCRYPTION_KEY", "\"${apikeyProps.getProperty("ENCRYPTION_KEY")}\"")
+            buildConfigField("String", "INIT_VECTOR", "\"${apikeyProps.getProperty("INIT_VECTOR")}\"")
+        } else {
+            // Set API key to empty string if apikey.properties doesn't exist
+            buildConfigField("String", "API_KEY", "\"\"")
+            buildConfigField("String", "ENCRYPTION_KEY", "\"\"")
+            buildConfigField("String", "INIT_VECTOR", "\"\"")
+        }
     }
 
     buildTypes {
@@ -37,6 +54,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 

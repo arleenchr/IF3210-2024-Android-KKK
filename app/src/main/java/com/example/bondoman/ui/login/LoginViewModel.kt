@@ -1,19 +1,24 @@
 package com.example.bondoman.ui.login
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.SharedPreferences
-import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bondoman.BuildConfig.ENCRYPTION_KEY
+import com.example.bondoman.BuildConfig.INIT_VECTOR
 import com.example.bondoman.R
 import com.example.bondoman.data.Result
 import com.example.bondoman.repository.LoginRepository
-import com.example.bondoman.room.TransactionDatabase
+import android.util.Base64
+import com.example.bondoman.service.RetrofitClient
 import com.example.bondoman.service.RetrofitClient.sharedPreferences
 import kotlinx.coroutines.launch
+import javax.crypto.Cipher
+import javax.crypto.SecretKey
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
 
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
@@ -30,16 +35,33 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
             val result = loginRepository.login(username, password)
 
             if (result is Result.Success) {
+                val token = result.data
+                val encryptedToken = encryptToken(token)
+
                 val editor: SharedPreferences.Editor = sharedPreferences.edit()
                 editor.putString("username", username)
-                editor.putString("token", result.data)
+                editor.putString("token", encryptedToken)
                 editor.apply()
                 _loginResult.value = LoginResult(success = LoggedInUserView(displayName = username))
             } else if (result is Result.Error) {
-                val errorMessage = result.exception.message ?: "Unknown error"
                 _loginResult.value = LoginResult(error = R.string.login_failed)
             }
         }
+    }
+
+    private fun encryptToken(token: String): String? {
+        try {
+            val keySpec = SecretKeySpec(ENCRYPTION_KEY.toByteArray(), "AES")
+            val cipher = Cipher.getInstance("AES/CBC/PKCS7Padding")
+            val initVectorBytes = Base64.decode(sharedPreferences.getString("init_vector", ""), Base64.DEFAULT)
+            val ivParameterSpec = IvParameterSpec(initVectorBytes)
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParameterSpec)
+            val encryptedBytes = cipher.doFinal(token.toByteArray())
+            return Base64.encodeToString(encryptedBytes, Base64.DEFAULT)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
     }
 
     fun loginDataChanged(username: String, password: String) {
@@ -52,17 +74,17 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         }
     }
 
-    // A placeholder username validation check
+    // Username validation check
     private fun isUserNameValid(username: String): Boolean {
-        return if (username.contains('@')) {
-            Patterns.EMAIL_ADDRESS.matcher(username).matches()
-        } else {
-            username.isNotBlank()
-        }
+        val maxLength = 50
+        val expectedEmailPattern = "^\\w+@std\\.stei\\.itb\\.ac\\.id$".toRegex()
+        return expectedEmailPattern.matches(username) && username.length <= maxLength
     }
 
-    // A placeholder password validation check
+    // Password validation check
     private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
+        val minLength = 6
+        val maxLength = 40
+        return password.length in minLength..maxLength
     }
 }

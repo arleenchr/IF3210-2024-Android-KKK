@@ -249,6 +249,27 @@ class AddTransaction : AppCompatActivity() {
         val title = titleEditText.text.toString().trim()
         val amountText = amountEditText.text.toString().trim()
 
-        return title.isNotEmpty() && amountText.isNotEmpty() && amountText != "0" && !selectedPlace.name.isNullOrEmpty()
+        // Validate title and amount
+        val isTitleValid = validateTitle(title)
+        val isAmountValid = validateAmount(amountText)
+
+        return isTitleValid && isAmountValid && !selectedPlace.name.isNullOrEmpty()
+    }
+
+    private fun validateTitle(title: String): Boolean {
+        val maxLength = 50
+        return title.isNotEmpty() && title.length <= maxLength && !containsSpecialCharacters(title)
+    }
+
+    private fun validateAmount(amountText: String): Boolean {
+        val amount = amountText.toIntOrNull() ?: 0
+        val minAmount = 1
+        val maxAmount = 1000000
+        return amount in minAmount..maxAmount
+    }
+
+    private fun containsSpecialCharacters(input: String): Boolean {
+        val regex = Regex("[^A-Za-z0-9\\s]")
+        return regex.containsMatchIn(input)
     }
 }

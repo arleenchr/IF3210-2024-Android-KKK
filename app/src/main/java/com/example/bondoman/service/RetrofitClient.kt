@@ -5,10 +5,20 @@ import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.OkHttpClient
 import okhttp3.Interceptor
 import android.content.SharedPreferences
+import android.util.Base64
+import com.example.bondoman.BuildConfig
+import javax.crypto.Cipher
+import javax.crypto.SecretKey
+import javax.crypto.spec.SecretKeySpec
+import javax.crypto.spec.IvParameterSpec
 
 object RetrofitClient {
     private const val BASE_URL = "https://pbd-backend-2024.vercel.app"
     lateinit var sharedPreferences: SharedPreferences
+
+    // Encryption key
+    private const val ENCRYPTION_KEY = BuildConfig.ENCRYPTION_KEY
+    private const val INIT_VECTOR = BuildConfig.INIT_VECTOR
 
     private val httpClient = OkHttpClient.Builder().apply {
         addInterceptor(BearerTokenInterceptor())
@@ -32,9 +42,25 @@ object RetrofitClient {
         }
 
         private fun getToken(): String {
-            val sharedPreferences1 = sharedPreferences
-            return (sharedPreferences1.getString("token", ""))
-                ?: ""
+            val sharedPreferences = sharedPreferences
+            val encryptedToken = sharedPreferences.getString("token", "") ?: ""
+            return decryptToken(encryptedToken) ?: ""
+        }
+
+        // Decrypt token using AES in CBC mode
+        private fun decryptToken(encryptedToken: String): String? {
+            try {
+                val keySpec = SecretKeySpec(ENCRYPTION_KEY.toByteArray(), "AES")
+                val cipher = Cipher.getInstance("AES/CBC/PKCS7Padding")
+                val initVectorBytes = Base64.decode(sharedPreferences.getString("init_vector", ""), Base64.DEFAULT)
+                val ivParameterSpec = IvParameterSpec(initVectorBytes)
+                cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParameterSpec)
+                val decryptedBytes = cipher.doFinal(Base64.decode(encryptedToken, Base64.DEFAULT))
+                return String(decryptedBytes)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return null
         }
     }
 }

@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         RetrofitClient.sharedPreferences = getSharedPreferences("identity", Context.MODE_PRIVATE)
 
         // Initialize Places SDK
-        Places.initialize(applicationContext, getString(R.string.places_api_key))
+        Places.initialize(applicationContext, BuildConfig.API_KEY)
 
         // Add network sensing
         networkUtils = NetworkUtils(this)
